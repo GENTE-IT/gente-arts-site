@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Brand from "../components/Brand";
+import LogoIntro from "../components/LogoIntro";
 import StoreFront from "../components/StoreFront";
 import { products } from "../data/products";
 
 export default function Home() {
   return <>
+    <LogoIntro />
     <div className="announcement">ENTREGA INMEDIATA <i/> ACTUALIZACIONES INCLUIDAS <i/> SOPORTE DIRECTO</div>
     <header className="siteHeader">
       <Brand />
