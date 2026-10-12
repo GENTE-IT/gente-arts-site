@@ -1,27 +1,22 @@
 import Image from "next/image";
 import Brand from "../components/Brand";
-import LogoIntro from "../components/LogoIntro";
 import StoreFront from "../components/StoreFront";
 import { products } from "../data/products";
 
 export default function Home() {
   return <>
-    <LogoIntro />
     <div className="announcement">ENTREGA INMEDIATA <i/> ACTUALIZACIONES INCLUIDAS <i/> SOPORTE DIRECTO</div>
     <header className="siteHeader">
       <Brand />
-      <nav aria-label="Navegación principal"><a href="#tienda">Tienda</a><a href="#gta-v">GTA V</a><a href="#gta-vi">GTA VI</a></nav>
+      <nav aria-label="Navegación principal"><a href="#inicio">Inicio</a><a href="#universos">Universos</a><a href="#tienda">Tienda</a></nav>
       <a className="headerContact" href="#soporte">CONTACTO ↗</a>
     </header>
     <main id="top">
-      <section className="hero" id="gta-v">
-        <Image className="heroImage" src="/assets/gta-v-wide.jpg" alt="Ilustración promocional oficial de GTA V con Franklin, Michael y Trevor" fill loading="eager" sizes="100vw" />
-        <div className="heroShade" />
-        <div className="heroCopy"><p className="kicker"><span/> GENTE.ARTS / GTA V</p><h1>Construye<br/><em>tu mundo.</em></h1><p>Scripts, mapeados y sistemas preparados para servidores que quieren tener identidad propia.</p><a className="button light" href="#tienda">EXPLORAR COLECCIÓN <b>↘</b></a></div>
-        <div className="heroCorner"><span>UNOFFICIAL MODDING STORE</span><span>LOS SANTOS / 2026</span></div>
+      <section className="brandHero" id="inicio">
+        <div className="brandHeroMeta"><span>DIGITAL GOODS / OPEN WORLDS</span><span>GENTE.ARTS® / 2026</span></div>
+        <img src="/brand/gente-arts-estela.webp" alt="La estela de color se transforma en el logotipo GENTE.ARTS" fetchPriority="high" />
+        <div className="brandHeroFoot"><p>Recursos con identidad para comunidades que quieren construir algo propio.</p><a href="#universos">ENTRAR A LA TIENDA <b>↘</b></a></div>
       </section>
-
-      <section className="intro"><div className="introIndex">01 / STORE</div><h2>Todo lo que<br/>necesita tu <i>servidor.</i></h2><p>Una tienda construida para crecer contigo. Compra una vez, instala con claridad y sigue creando.</p></section>
       <StoreFront products={products} />
 
       <section className="featureSplit">
