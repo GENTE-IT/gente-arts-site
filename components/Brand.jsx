@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "./StudioLink";
 
 export default function Brand({ footer = false }) {
   return <Link className={`brand ${footer ? "brandFooter" : ""}`} href="/" aria-label="GENTE.ARTS, inicio">

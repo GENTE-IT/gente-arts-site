@@ -92,7 +92,7 @@ export default function ScrollWordReveal() {
           <span className="wordVisual" aria-hidden="true" ref={passageRef}>No vendemos ruido. Creamos <em>piezas digitales</em> para mundos abiertos con identidad, detalle y <strong>algo que decir.</strong></span>
         </h2>
         <aside className="wordSide wordMeasure" aria-hidden="true">
-          <span>SCROLL TO READ<br/>REVERSIBLE MOTION</span>
+          <span>EL DETALLE IMPORTA<br/>SIGUE EXPLORANDO</span>
           <div className="wordPercent"><span ref={percentRef}>00</span><small>% LEÍDO</small></div>
           <span>DISEÑO DIGITAL<br/>SIN RUIDO</span>
         </aside>

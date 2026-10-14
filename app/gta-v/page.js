@@ -1,19 +1,19 @@
-import Image from "next/image";
-import Link from "next/link";
 import ProductCatalog from "../../components/ProductCatalog";
-import { SiteFooter, SiteHeader } from "../../components/SiteShell";
+import Media from "../../components/Media";
+import StudioLink from "../../components/StudioLink";
+import Icon from "../../components/Icon";
 import { products } from "../../data/products";
 
-export const metadata = { title:"GTA V — GENTE.ARTS", description:"Scripts, mapeados, sistemas y ropa para GTA V y FiveM." };
+export const metadata = { title: "GTA V — GENTE.ARTS", description: "Explora la colección de scripts, mapeados, sistemas y ropa para GTA V y FiveM.", alternates: { canonical: "/gta-v" } };
 
 export default function GtaVPage() {
-  const gtaProducts=products.filter(product=>product.game==="gta-v");
-  return <><SiteHeader/><main>
+  return <main id="contenido">
     <section className="catalogHero gtaVHero">
-      <Image src="/assets/gta-v-wide.jpg" alt="Universo GTA V" fill priority sizes="100vw"/>
-      <div className="catalogHeroShade"/><div className="catalogHeroTop"><Link href="/">← VOLVER</Link><span>01 / UNIVERSO DISPONIBLE</span></div>
-      <div className="catalogHeroCopy"><p className="kicker"><span/> GENTE.ARTS / GTA V</p><h1>GTA V</h1><p>Recursos digitales para servidores con criterio propio.</p><a href="#catalogo">EXPLORAR COLECCIÓN ↓</a></div>
+      <Media src="/assets/gta-v-wide.jpg" alt="Los Santos, universo GTA V" eager/>
+      <div className="catalogHeroShade"/>
+      <div className="catalogHeroTop"><StudioLink href="/"><Icon name="back" size={16}/> Universos</StudioLink><span>01 / GENTE.ARTS</span></div>
+      <div className="catalogHeroCopy"><div><p className="eyebrow">LOS SANTOS ES SOLO EL PRINCIPIO</p><h1>GTA V<span>.</span></h1></div><div><p>Más posibilidades<br/>para tu mundo.</p><a href="#catalogo" className="circleArrow" aria-label="Ir al catálogo"><Icon name="down"/></a></div></div>
     </section>
-    <div id="catalogo"><ProductCatalog products={gtaProducts}/></div>
-  </main><SiteFooter/></>;
+    <ProductCatalog products={products.filter(product => product.game === "gta-v")}/>
+  </main>;
 }
