@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from "./motion/gsap";
-import Stripes from "./brand/Stripes";
 
 const items = ["Mapeados", "Scripts", "Ropa", "Sistemas", "FiveM", "GTA V", "GTA VI próximamente"];
 
@@ -28,7 +27,7 @@ export default function Marquee({ dark = false }) {
       return () => loop.kill();
     });
   }, { scope: root });
-  const group = <>{items.map(item => <span key={item}>{item}<Stripes width={14}/></span>)}</>;
+  const group = <>{items.map(item => <span key={item}>{item}<i className="marqueeDot" aria-hidden="true"/></span>)}</>;
   return <div className={`marquee ${dark ? "marqueeDark" : ""}`} ref={root} aria-label="Especialidades del estudio">
     <div className="marqueeTrack" aria-hidden="true">{group}{group}</div>
     <span className="srOnly">{items.join(", ")}</span>
