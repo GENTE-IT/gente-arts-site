@@ -141,23 +141,23 @@ main { min-height: 50vh; }
 .isFlipped .cardFront { pointer-events: none; }
 
 /* Hero */
-.brandHero { position: relative; min-height: calc(100svh - 110px); max-height: 1100px; background: #000; color: #fff; overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; padding: 28px var(--pad) 48px; }
+.brandHero { position: relative; min-height: calc(100svh - 110px); max-height: 1100px; background: #fff; color: var(--ink); overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; padding: 28px var(--pad) 48px; }
 .heroLight { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .heroLight .lightfall-container { position: absolute; inset: 0; }
-.heroMeta { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; font-size: 13px; font-weight: 600; color: #9aa094; }
+.heroMeta { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; font-size: 13px; font-weight: 600; color: var(--muted); }
 .heroMeta>span:first-child { display: flex; gap: 10px; align-items: center; }
 .heroStage { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: clamp(24px,4vw,72px); padding: 24px 0 16px; min-width: 0; --mark-h: clamp(56px,10.5vw,168px); }
 .heroFigureStage { perspective: 900px; flex: none; }
-.heroFigures { height: clamp(150px,24vw,360px); color: #fff; filter: drop-shadow(0 24px 40px #0009); will-change: transform; }
+.heroFigures { height: clamp(150px,24vw,360px); color: var(--ink); filter: drop-shadow(0 20px 36px #0002); will-change: transform; }
 .heroMark { display: flex; flex-direction: column; align-items: flex-start; gap: .04em; font-size: var(--mark-h); min-width: 0; }
-.heroMark .fold-text { font-family: var(--font-body); font-stretch: 122%; letter-spacing: -.03em; line-height: .9; color: #fff; }
+.heroMark .fold-text { font-family: var(--font-body); font-stretch: 122%; letter-spacing: -.03em; line-height: .9; color: var(--ink); }
 .heroArts .fold-text-ink { display: inline-block; background-image: var(--brand-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 .heroActions { position: relative; z-index: 2; grid-row: 3; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 
 /* Marquee */
-.marquee { overflow: hidden; background: #000; border-top: 1px solid #ffffff14; border-bottom: 1px solid #ffffff14; padding: 16px 0; color: #fff; }
+.marquee { overflow: hidden; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; color: var(--ink); }
 .marqueeTrack { display: flex; width: max-content; will-change: transform; }
-.marqueeTrack>span { display: inline-flex; align-items: center; gap: 26px; padding: 0 26px 0 0; font-size: 13px; font-weight: 700; font-stretch: 118%; letter-spacing: .14em; text-transform: uppercase; color: #d9ddd4; white-space: nowrap; }
+.marqueeTrack>span { display: inline-flex; align-items: center; gap: 26px; padding: 0 26px 0 0; font-size: 13px; font-weight: 700; font-stretch: 118%; letter-spacing: .14em; text-transform: uppercase; color: #3f453e; white-space: nowrap; }
 .marqueeDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 4px #f0b43c22; }
 
 /* Universe */

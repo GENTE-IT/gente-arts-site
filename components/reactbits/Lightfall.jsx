@@ -1,6 +1,7 @@
 'use client';
 
-// Lightfall from React Bits (https://reactbits.dev), JavaScript + CSS variant. Unchanged.
+// Lightfall from React Bits (https://reactbits.dev), JavaScript + CSS variant.
+// One change: the cleanup frees GPU objects but keeps the context (see the end of the effect).
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -729,7 +730,10 @@ const Lightfall = ({
       [streakProgram, downProgram, blurProgram, compositeProgram].forEach(item => gl.deleteProgram(item.program));
       gl.deleteBuffer(buffer);
       gl.deleteVertexArray(vao);
-      if (!gl.isContextLost()) gl.getExtension('WEBGL_lose_context')?.loseContext();
+      // GENTE.ARTS: do not lose the context here. Next keeps visited pages mounted
+      // but hidden and runs this cleanup on hide; a context lost that way cannot be
+      // restored when the page shows again (getExtension returns null), so the
+      // canvas would stay blank. Programs, textures and buffers are freed above.
     };
   }, [generation]);
 
