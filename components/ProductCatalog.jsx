@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import AccessCard from "./AccessCard";
 import Dialog from "./Dialog";
@@ -31,7 +31,8 @@ export default function ProductCatalog({ products }) {
     return sort === "price-asc" ? filtered.sort((a, b) => a.price - b.price) : sort === "price-desc" ? filtered.sort((a, b) => b.price - a.price) : sort === "name" ? filtered.sort((a, b) => a.name.localeCompare(b.name, "es")) : filtered;
   }, [products, filter, query, sort]);
   const reset = () => { setFilter("all"); setQuery(""); setSort("featured"); };
-  const open = product => { setFlipped(false); setSelected(product); };
+  // Stable identity: DeepLink re-runs its effect when this changes, which would reset the flip.
+  const open = useCallback(product => { setFlipped(false); setSelected(product); }, []);
 
   return <section className="catalogPageStore" id="catalogo" aria-labelledby="catalog-title">
     <Suspense fallback={null}><DeepLink products={products} onSelect={open}/></Suspense>
@@ -39,14 +40,14 @@ export default function ProductCatalog({ products }) {
     <div className="catalogControls" data-reveal="fade"><div className="filters" role="group" aria-label="Filtrar catálogo">{filters.map(([value, label]) => <button className={filter === value ? "active" : ""} aria-pressed={filter === value} onClick={() => setFilter(value)} key={value}>{label}<span>{products.filter(product => value === "all" || product.category === value).length}</span></button>)}</div><label className="search"><Icon name="search" size={18}/><input value={query} onChange={event => setQuery(event.target.value)} type="search" placeholder="Buscar una tarjeta…" aria-label="Buscar producto"/></label></div>
     <div className="catalogMeta"><p role="status" aria-live="polite">{visible.length} {visible.length === 1 ? "tarjeta" : "tarjetas"} <span>· Precios de muestra</span></p><label>Ordenar por <select value={sort} onChange={event => setSort(event.target.value)} aria-label="Ordenar productos"><option value="featured">Selección del estudio</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option><option value="name">Nombre A–Z</option></select></label></div>
     <div className="productGrid">{visible.map((product, index) => <article className="productCard" key={product.id} style={{ "--i": index }}>
-      <button className="productOpen" onClick={() => open(product)} aria-label={`Ver la tarjeta de ${product.name}`}><AccessCard product={product} sizes="(max-width: 600px) 92vw, (max-width: 1100px) 46vw, 30vw"/></button>
+      <button className="productOpen" onClick={() => open(product)} aria-label={`Ver la tarjeta de ${product.name}`}><AccessCard product={product}/></button>
       <div className="productInfo"><div><h3><button onClick={() => open(product)}>{product.name}</button></h3><p className="productSummary">{product.description}</p></div><button className={`quickAdd ${cart.includes(product.id) ? "isAdded" : ""}`} onClick={() => add(product)} aria-label={cart.includes(product.id) ? `${product.name} ya está en la cesta` : `Añadir ${product.name} a la cesta`}><Icon name={cart.includes(product.id) ? "check" : "plus"} size={18}/></button></div>
     </article>)}</div>
     {!visible.length && <div className="emptyResults"><Icon name="search" size={32}/><h3>No encontramos esa tarjeta.</h3><p>Prueba con otro nombre o vuelve a la colección completa.</p><button className="button darkButton" onClick={reset}>Limpiar filtros <Icon name="refresh" size={18}/></button></div>}
     <div className="catalogNotice" data-reveal="fade"><span className="statusDot"/><p>Estamos preparando la apertura. Los precios son de muestra y las tarjetas todavía no se pueden comprar ni activar.</p></div>
     {selected && <Dialog className="productDialog" labelId="product-title" onClose={() => setSelected(null)}><div className="productDialogInner">
       <button className="iconButton dialogClose" onClick={() => setSelected(null)} aria-label="Cerrar detalles"><Icon name="close"/></button>
-      <div className="modalStage"><AccessCard product={selected} flipped={flipped} eager sizes="(max-width: 800px) 92vw, 50vw"/><button className="flipButton" onClick={() => setFlipped(value => !value)} aria-pressed={flipped}><Icon name="refresh" size={16}/>{flipped ? "Ver el frente" : "Girar la tarjeta"}</button></div>
+      <div className="modalStage"><AccessCard product={selected} flippable flipped={flipped} onFlip={setFlipped}/><button className="flipButton" onClick={() => setFlipped(value => !value)} aria-pressed={flipped}><Icon name="refresh" size={16}/>{flipped ? "Ver el frente" : "Girar la tarjeta"}</button></div>
       <div className="modalBody">
         <p className="kicker">{categoryOf(selected).label} · {selected.gameLabel} · {selected.serial}</p>
         <h2 id="product-title">{selected.name}</h2>
