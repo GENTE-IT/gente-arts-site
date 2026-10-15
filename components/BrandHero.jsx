@@ -9,7 +9,7 @@ import Icon from "./Icon";
 import StudioLink from "./StudioLink";
 
 /*
- * Opening scene on black: falling light (React Bits' Lightfall) behind the
+ * Opening scene on white: falling light (React Bits' Lightfall) behind the
  * wordmark set as type and unfolded letter by letter (FoldText, with hover
  * refold). The figures fold open the same way with GSAP and refold near the
  * pointer like the letters do. Two calls to action underneath.
@@ -51,7 +51,7 @@ export default function BrandHero() {
   }, { scope: root });
 
   return <section className="brandHero" id="inicio" ref={root}>
-    <div className="heroLight" aria-hidden="true"><Lightfall colors={["#ffffff", "#ffffff", "#bfe3ff", "#f0b43c"]} backgroundColor="#3f8fb0" speed={0.26} streakCount={3} streakWidth={0.8} streakLength={1.1} twinkle={0.3} backgroundGlow={0.14} headGlow={0.6} bloom={0.4} depth={0.55} fade={0.3} opacity={0.9} mouseInteraction holdToWarp intro/></div>
+    <div className="heroLight" aria-hidden="true"><Lightfall lightMode colors={["#141614", "#3f8fb0", "#e2693f", "#f0b43c"]} backgroundColor="#3f8fb0" speed={0.26} streakCount={3} streakWidth={0.9} streakLength={1.1} twinkle={0.3} backgroundGlow={0} headGlow={0.5} bloom={0.4} depth={0.55} fade={0.3} opacity={0.95} mouseInteraction holdToWarp intro/></div>
     <h1 className="srOnly">GENTE.ARTS — Tu mundo. Tu manera.</h1>
     <div className="heroMeta"><span><i className="kickerDot"/>Estudio creativo digital</span><span>Vol. 01 · GTA V / GTA VI</span><span>Tarjetas de acceso a recursos</span></div>
     <div className="heroStage">
@@ -61,6 +61,6 @@ export default function BrandHero() {
         <FoldText className="heroArts" text="ARTS" foldStyle="paper" splitBy="char" hinge="top" trigger="mount" foldAngle={92} duration={0.7} stagger={0.07} staggerFrom="start" ease="power3.out" hoverRefold refoldRadius={160} refoldAngle={40} perspective={900} creaseShading={0.35} fontSize="calc(var(--mark-h) * .82)" fontWeight={900}/>
       </div>
     </div>
-    <div className="heroActions"><StudioLink className="button lightButton" href="/gta-v#catalogo">Ver la colección <Icon name="arrow"/></StudioLink><a className="button ghostButton" href="#como-funciona">Cómo funciona <Icon name="down"/></a></div>
+    <div className="heroActions"><StudioLink className="button darkButton" href="/gta-v#catalogo">Ver la colección <Icon name="arrow"/></StudioLink><a className="button outlineButton" href="#como-funciona">Cómo funciona <Icon name="down"/></a></div>
   </section>;
 }
