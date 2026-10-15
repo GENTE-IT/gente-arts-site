@@ -106,25 +106,27 @@ main { min-height: 50vh; }
 .mediaFallback i { font-size: 18px; color: var(--blue); font-style: normal; }
 .mediaFallback small { font-size: 10px; margin-top: 12px; }
 
-/* Access card (React Bits HoloCard + HTML layers) */
-.accessCard { width: 100%; }
-.accessCard .holo-card { display: block; width: 100%; }
-.cardLayer { position: absolute; inset: 0; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(14px,3.6%,22px) clamp(16px,4.2%,24px); color: #fff; isolation: isolate; container-type: inline-size; border-radius: inherit; }
-.cardFrontLayer::after { content: ""; position: absolute; left: clamp(16px,4.2%,24px); right: clamp(16px,4.2%,24px); top: 0; height: 4px; border-radius: 0 0 3px 3px; background: var(--accent); }
-.cardTint { position: absolute; inset: 0; z-index: -2; background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 38%, transparent) 0%, transparent 40%), linear-gradient(0deg,#090c0df0 0%,#090c0d8c 40%,#090c0d14 72%); }
-.cardGrain { position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: var(--grain); opacity: .14; mix-blend-mode: overlay; }
-.cardBackLayer { background: #161918; background-image: radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 55%); }
-.cardHead, .cardTitle, .cardFoot, .cardBackBody { position: relative; z-index: 1; }
+/* Access card */
+.accessCard { --mx: 50; --my: 35; width: 100%; perspective: 1400px; }
+.cardFloat { position: relative; }
+.cardBody { position: relative; aspect-ratio: 1.586; transform-style: preserve-3d; will-change: transform; }
+.cardFace { position: absolute; inset: 0; border-radius: var(--card-radius); overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--ink-2); color: #fff; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(14px,3.6%,22px) clamp(16px,4.2%,24px); isolation: isolate; box-shadow: inset 0 0 0 1px #ffffff1c, 0 30px 60px -28px #000c; container-type: inline-size; }
+.cardFront::after { content: ""; position: absolute; left: clamp(16px,4.2%,24px); right: clamp(16px,4.2%,24px); top: 0; height: 4px; border-radius: 0 0 3px 3px; background: var(--accent); }
+.cardFront .media { position: absolute; inset: 0; z-index: -3; background: #1d201d; }
+.cardTint { position: absolute; inset: 0; z-index: -2; background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 50%, transparent) 0%, transparent 42%), linear-gradient(0deg,#090c0df0 0%,#090c0d80 42%,#090c0d1a 100%); }
+.cardGrain { position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: var(--grain); opacity: .16; mix-blend-mode: overlay; }
+.cardSheen { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at calc(var(--mx) * 1%) calc(var(--my) * 1%), #ffffff2e, transparent 42%), linear-gradient(calc(100deg + var(--mx) * .6deg), transparent 35%, #ffffff10 48%, transparent 62%); mix-blend-mode: screen; }
+.cardHead, .cardTitle, .cardFoot, .cardBackBody { position: relative; z-index: 3; }
 .cardHead { display: flex; justify-content: space-between; align-items: flex-start; }
-.cardSerial { display: inline-flex; align-items: center; gap: 8px; font: 500 clamp(10px,2.6cqw,12px) var(--font-mono); letter-spacing: .08em; color: #d6dbd3; }
-.cardHoloTag { font: 700 clamp(8px,2.1cqw,10px) var(--font-body); letter-spacing: .1em; text-transform: uppercase; padding: 3px 7px; border-radius: 999px; background: linear-gradient(90deg,#f0b43c,#e2693f,#3f8fb0); color: #0d0f0e; }
+.cardSerial { font: 500 clamp(10px,2.6cqw,12px) var(--font-mono); letter-spacing: .08em; color: #d6dbd3; }
 .cardTitle { align-self: end; padding-bottom: 6%; }
 .cardTitle small { display: block; font-size: clamp(10px,2.6cqw,12px); font-weight: 600; color: #d6dbd3; margin-bottom: .6em; }
-.cardTitle h3 { font-size: clamp(22px,8.2cqw,44px); line-height: .95; font-stretch: 115%; letter-spacing: -.03em; max-width: 86%; text-wrap: balance; text-shadow: 0 2px 18px #0008; }
+.cardTitle h3 { font-size: clamp(22px,8.2cqw,44px); line-height: .95; font-stretch: 115%; letter-spacing: -.03em; max-width: 86%; text-wrap: balance; }
 .cardFoot { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: clamp(10px,2.6cqw,12px); font-weight: 600; color: #d6dbd3; }
 .cardFoot .logo { color: #fff; height: clamp(9px,2.6cqw,12px); width: auto; }
 .cardFoot strong { color: #fff; font-size: clamp(13px,3.4cqw,16px); font-weight: 700; }
-.cardBackLayer .logo { color: #fff; }
+.cardBack { transform: rotateY(180deg); background: #161918; background-image: radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 55%); }
+.cardBack .logo { color: #fff; }
 .cardBackBody { align-self: center; padding: 4% 0; }
 .cardBackLabel { font-size: clamp(10px,2.6cqw,12px); font-weight: 600; color: #a9b0a6; margin-bottom: .8em; }
 .cardBackBody ul { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(4px,1.4cqw,8px); }
@@ -135,6 +137,8 @@ main { min-height: 50vh; }
 .cardFootBack { gap: 16px; }
 .cardFootBack span:last-child { font-size: clamp(9px,2.3cqw,11px); color: #a9b0a6; text-align: right; }
 .cardBarcode { width: clamp(70px,24cqw,120px); height: clamp(16px,5cqw,26px); flex-shrink: 0; opacity: .85; background: repeating-linear-gradient(90deg,#fff 0 2px,transparent 2px 4px,#fff 4px 5px,transparent 5px 9px,#fff 9px 12px,transparent 12px 14px,#fff 14px 15px,transparent 15px 18px); }
+.cardShadow { position: absolute; left: 6%; right: 6%; bottom: -8%; height: 24%; z-index: -1; background: radial-gradient(ellipse at 50% 50%, #0009, transparent 70%); filter: blur(16px); }
+.isFlipped .cardFront { pointer-events: none; }
 
 /* Hero */
 .brandHero { position: relative; min-height: calc(100svh - 110px); max-height: 1100px; background: #000; color: #fff; overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; padding: 28px var(--pad) 48px; }
