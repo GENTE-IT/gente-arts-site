@@ -1,13 +1,16 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, SplitText, useGSAP, MOTION_OK } from "./motion/gsap";
-import Media from "./Media";
+import { gsap, useGSAP, MOTION_OK } from "./motion/gsap";
+import FoldText from "./reactbits/FoldText";
+import Figures from "./brand/Figures";
 import Icon from "./Icon";
+import StudioLink from "./StudioLink";
 
 /*
- * Opening scene. An intro timeline builds the wordmark letter by letter, then
- * a scrubbed timeline parallaxes and fades the content as the hero leaves.
+ * Opening scene on black: the wordmark set as type and unfolded letter by
+ * letter (React Bits' FoldText, with hover refold), the figures folding open
+ * the same way with GSAP, and the two calls to action underneath.
  */
 export default function BrandHero() {
   const root = useRef(null);
@@ -15,37 +18,26 @@ export default function BrandHero() {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const el = root.current;
-      const wordmark = el.querySelector(".heroWordmark");
-      const split = SplitText.create(wordmark, { type: "chars", charsClass: "heroChar" });
-      const intro = gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.15 });
-      intro
-        .from(".heroBackdrop", { scale: 1.12, autoAlpha: 0, duration: 2.2, ease: "power2.out" }, 0)
-        .from(split.chars, { yPercent: 105, rotate: 4, duration: 1.3, stagger: 0.045 }, 0.1)
-        .from(".heroFigures", { y: 60, autoAlpha: 0, duration: 1.4 }, 0.45)
-        .from(".heroMeta > *", { y: -14, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.7)
-        .from(".heroFoot > *", { y: 26, autoAlpha: 0, duration: 1, stagger: 0.12 }, 0.85)
-        .from(".heroRule", { scaleX: 0, duration: 1.2, ease: "power3.inOut" }, 0.9);
-
+      gsap.timeline({ defaults: { ease: "power3.out" } })
+        .fromTo(".heroFigures", { rotationX: -92, autoAlpha: 0, transformOrigin: "50% 0%" }, { rotationX: 0, autoAlpha: 1, duration: 1.1, ease: "power3.out" }, 0.1)
+        .from(".heroMeta > *", { y: -12, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 0.5)
+        .from(".heroActions > *", { y: 26, autoAlpha: 0, duration: 1, stagger: 0.1 }, 0.9);
       gsap.timeline({ scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } })
-        .to(".heroStage", { yPercent: 28, ease: "none" }, 0)
-        .to(".heroFoot, .heroMeta", { autoAlpha: 0, y: -30, ease: "none" }, 0)
-        .to(".heroBackdrop", { yPercent: 18, ease: "none" }, 0);
-      return () => split.revert();
+        .to(".heroStage", { yPercent: 22, autoAlpha: 0.2, ease: "none" }, 0)
+        .to(".heroActions, .heroMeta", { autoAlpha: 0, y: -30, ease: "none" }, 0);
     });
   }, { scope: root });
 
   return <section className="brandHero" id="inicio" ref={root}>
-    <div className="heroBackdrop" aria-hidden="true"><Media src="/assets/los-santos-night.jpg" alt="" eager sizes="100vw" position="50% 40%"/></div>
-    <div className="heroMeta"><span><i className="statusDot"/> ESTUDIO CREATIVO DIGITAL</span><span>VOL. 01 — GTA V / GTA VI</span><span>IDENTIDAD EN CADA PÍXEL</span></div>
+    <h1 className="srOnly">GENTE.ARTS — Tu mundo. Tu manera.</h1>
+    <div className="heroMeta"><span><i className="kickerDot"/>Estudio creativo digital</span><span>Vol. 01 · GTA V / GTA VI</span><span>Tarjetas de acceso a recursos</span></div>
     <div className="heroStage">
-      <img className="heroFigures" src="/brand/figures.png" alt="" width="295" height="405" fetchPriority="high" aria-hidden="true"/>
-      <h1 className="heroWordmark" aria-label="GENTE.ARTS"><span className="heroGente">GENTE.</span><span className="heroArts">ARTS</span></h1>
+      <div className="heroFigureStage"><Figures className="heroFigures" height={340}/></div>
+      <div className="heroMark" aria-hidden="true">
+        <FoldText className="heroGente" text="GENTE." foldStyle="paper" splitBy="char" hinge="top" trigger="mount" foldAngle={92} duration={0.7} stagger={0.06} staggerFrom="start" ease="power3.out" hoverRefold refoldRadius={160} refoldAngle={40} perspective={900} creaseShading={0.5} fontSize="var(--mark-h)" fontWeight={900}/>
+        <FoldText className="heroArts" text="ARTS" foldStyle="paper" splitBy="char" hinge="top" trigger="mount" foldAngle={92} duration={0.7} stagger={0.07} staggerFrom="start" ease="power3.out" hoverRefold refoldRadius={160} refoldAngle={40} perspective={900} creaseShading={0.35} fontSize="calc(var(--mark-h) * .82)" fontWeight={900}/>
+      </div>
     </div>
-    <div className="heroRule" aria-hidden="true"/>
-    <div className="heroFoot">
-      <p className="heroClaim"><span className="eyebrow">PARA QUIENES CREAN</span>Tu mundo.<br/><em>Tu manera.</em></p>
-      <p className="heroLead">Mapeados, scripts, sistemas y ropa para servidores de GTA V con identidad propia. El siguiente capítulo, GTA VI, ya está en marcha.</p>
-      <a className="heroExplore" href="#universos"><span>Encuentra tu universo</span><span className="circleArrow"><Icon name="down"/></span></a>
-    </div>
+    <div className="heroActions"><StudioLink className="button lightButton" href="/gta-v#catalogo">Ver la colección <Icon name="arrow"/></StudioLink><a className="button ghostButton" href="#como-funciona">Cómo funciona <Icon name="down"/></a></div>
   </section>;
 }

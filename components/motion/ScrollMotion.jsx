@@ -15,6 +15,9 @@ import { gsap, ScrollTrigger, SplitText, useGSAP, MOTION_OK } from "./gsap";
  *   data-split             split the heading into lines/words and animate them in
  *   data-parallax="0.12"   scrub the element vertically while its parent scrolls
  *   data-scale             subtle zoom-out of an image while entering
+ *   data-img-reveal        wipe the image in (clip + settle from a zoom) when it enters
+ *   data-batch             stagger the children in viewport batches (grids)
+ *   data-magnetic          buttons and round links follow the pointer slightly
  *
  * Everything is wrapped in gsap.matchMedia so reduced-motion users get the
  * final state immediately, and useGSAP reverts it all when the page unmounts.
@@ -66,6 +69,37 @@ export default function ScrollMotion({ scope = "main" }) {
       q("[data-scale]").forEach(el => {
         gsap.from(el, { scale: 1.12, duration: 1.4, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 85%", once: true } });
       });
+
+      // Image reveals: the frame wipes open while the picture settles from a zoom.
+      q("[data-img-reveal]").forEach(el => {
+        const img = el.querySelector("img");
+        const dir = el.getAttribute("data-img-reveal") || "up";
+        const clip = dir === "left" ? "inset(0 100% 0 0)" : dir === "right" ? "inset(0 0 0 100%)" : "inset(100% 0 0 0)";
+        const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: "top 85%", once: true } });
+        tl.fromTo(el, { clipPath: clip }, { clipPath: "inset(0% 0 0 0)", duration: 1.3, ease: "power4.inOut", clearProps: "clipPath" }, 0);
+        if (img) tl.from(img, { scale: 1.22, duration: 1.8, ease: "power3.out" }, 0);
+      });
+
+      // Grids: stagger items as they arrive, in batches.
+      q("[data-batch]").forEach(grid => {
+        const items = Array.from(grid.children);
+        gsap.set(items, { autoAlpha: 0, y: 40 });
+        ScrollTrigger.batch(items, { start: "top 90%", once: true, interval: 0.12, batchMax: 4, onEnter: batch => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.1, overwrite: true }) });
+      });
+    });
+
+    // Magnetic buttons: follow the pointer a few pixels and spring back (pointer devices only).
+    mm.add(`${MOTION_OK} and (hover: hover)`, () => {
+      const cleanups = root.querySelectorAll("[data-magnetic], .button, .circleArrow");
+      cleanups.forEach(el => {
+        const x = gsap.quickTo(el, "x", { duration: 0.5, ease: "power3.out" });
+        const y = gsap.quickTo(el, "y", { duration: 0.5, ease: "power3.out" });
+        const move = event => { const r = el.getBoundingClientRect(); x((event.clientX - r.left - r.width / 2) * 0.28); y((event.clientY - r.top - r.height / 2) * 0.28); };
+        const leave = () => { x(0); y(0); };
+        el.addEventListener("pointermove", move); el.addEventListener("pointerleave", leave);
+        el.__magnetic = () => { el.removeEventListener("pointermove", move); el.removeEventListener("pointerleave", leave); };
+      });
+      return () => cleanups.forEach(el => { el.__magnetic?.(); delete el.__magnetic; });
     });
     // Images and fonts load after mount; keep trigger positions honest.
     const refresh = () => ScrollTrigger.refresh();
