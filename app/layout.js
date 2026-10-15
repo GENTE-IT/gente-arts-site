@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Archivo, JetBrains_Mono } from "next/font/google";
 import ShopProvider from "../components/ShopProvider";
+import ThemeProvider, { themeBootScript } from "../components/ThemeProvider";
 import { SiteHeader, SiteFooter } from "../components/SiteShell";
 
 // One family for everything: Archivo's width axis gives the extended display
@@ -16,8 +17,8 @@ export const metadata = {
   twitter: { card: "summary", title: "GENTE.ARTS — Tu mundo. Tu manera.", images: ["/brand/gente-arts-final.png"] }
 };
 
-export const viewport = { themeColor: "#141614", width: "device-width", initialScale: 1 };
+export const viewport = { themeColor: [{ media: "(prefers-color-scheme: light)", color: "#f4f2ec" }, { media: "(prefers-color-scheme: dark)", color: "#0e100f" }], width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }) {
-  return <html lang="es" className={`${archivo.variable} ${mono.variable}`} data-scroll-behavior="smooth"><body><ShopProvider><a className="skipLink" href="#contenido">Saltar al contenido</a><SiteHeader/>{children}<SiteFooter/></ShopProvider></body></html>;
+  return <html lang="es" className={`${archivo.variable} ${mono.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: themeBootScript }}/></head><body><ThemeProvider><ShopProvider><a className="skipLink" href="#contenido">Saltar al contenido</a><SiteHeader/>{children}<SiteFooter/></ShopProvider></ThemeProvider></body></html>;
 }
