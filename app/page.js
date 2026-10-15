@@ -17,9 +17,8 @@ const principles = [
 ];
 
 export default function Home() {
-  const hero = products.find(product => product.id === "skyline-villa");
   return <main id="contenido">
-    <BrandHero product={hero}/>
+    <BrandHero/>
     <Marquee/>
     <UniversePortal/>
     <HowItWorks product={products.find(product => product.id === "velocity-mechanic")}/>
