@@ -14,6 +14,11 @@ export default function Icon({ name = "arrow", size = 20, ...props }) {
     pause: <path d="M8 5v14M16 5v14"/>,
     play: <path d="m8 4 12 8-12 8V4Z"/>,
     mail: <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></>,
+    instagram: <><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></>,
+    tiktok: <path d="M14 3v10.5a3.5 3.5 0 1 1-3.5-3.5M14 3a5 5 0 0 0 5 5"/>,
+    youtube: <><path d="M3 8.5c0-1.4 1.1-2.5 2.5-2.5h13C19.9 6 21 7.1 21 8.5v7c0 1.4-1.1 2.5-2.5 2.5h-13A2.5 2.5 0 0 1 3 15.5v-7Z"/><path d="m10 9.5 5 2.5-5 2.5v-5Z" fill="currentColor" stroke="none"/></>,
+    discord: <><path d="M8.5 17.5C6 17 4.5 15.5 4.5 15.5c.5-5 2-8.5 2-8.5 2-1 3.5-1 3.5-1l.5 1h3l.5-1s1.5 0 3.5 1c0 0 1.5 3.5 2 8.5 0 0-1.5 1.5-4 2l-1-1.5"/><path d="M8.5 17.5 9.5 16M8 13.5h.01M16 13.5h.01"/></>,
+    x: <path d="m4 4 16 16M20 4 4 20"/>,
   };
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>{paths[name] || paths.arrow}</svg>;
 }

@@ -239,10 +239,18 @@ main { min-height: 50vh; }
 .supportCopy { max-width: 520px; font-size: 16px; line-height: 1.65; color: #d9ddd4; }
 .supportActions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
 
+/* Social buttons */
+.socialLinks { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.socialLinks a { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; padding: 10px 16px 10px 12px; border: 1px solid #ffffff2b; border-radius: 999px; font-size: 13px; font-weight: 600; color: #d9ddd4; transition: background .25s, color .25s, border-color .25s; will-change: transform; }
+.socialLinks a:hover { background: #fff; color: var(--ink); border-color: #fff; }
+.socialCompact a { width: 44px; height: 44px; padding: 0; justify-content: center; border-color: var(--line); color: var(--ink); }
+.socialCompact a:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+.menuSocial { margin-top: 26px; }
+
 /* Footer */
 .siteFooter { padding: 80px var(--pad) 25px; background: #0f110f; color: #c9cfc3; overflow: hidden; }
 .footerTop { position: relative; display: flex; justify-content: space-between; gap: 50px; padding-bottom: 60px; }
-.footerBrand { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+.footerBrand { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: 420px; }
 .footerTop .brand { color: #f5f6ee; }
 .footerTop .brand .logo { height: 30px; }
 .footerTop>div>p { font-size: 15px; line-height: 1.6; color: #8a9684; }
@@ -291,7 +299,7 @@ main { min-height: 50vh; }
 .catalogMeta label { display: flex; align-items: center; gap: 10px; }
 .catalogMeta select { max-width: 190px; border: 0; background: transparent; color: var(--ink); padding: 8px 0; font-size: 13px; font-weight: 600; cursor: pointer; }
 .productGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 54px 28px; }
-.productCard { min-width: 0; animation: rise .6s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms); }
+.productCard { min-width: 0; }
 .productOpen { display: block; width: 100%; padding: 0; border: 0; background: none; text-align: left; border-radius: var(--card-radius); }
 .productOpen:focus-visible { outline-offset: 6px; }
 .productInfo { display: flex; gap: 16px; justify-content: space-between; padding: 20px 4px 0; align-items: flex-start; }

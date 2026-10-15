@@ -33,7 +33,7 @@ export default function FeaturedRail({ products }) {
       <div className="railMeta"><p>Cuatro piezas con las que empezar. Todas con soporte y actualizaciones.</p><div className="railProgress" aria-hidden="true"><i/></div></div>
     </div>
     <div className="railViewport">
-      <div className="railTrack">
+      <div className="railTrack" data-batch>
         {products.map(product => <article className="railItem" key={product.id}>
           <StudioLink className="railCardLink" href={`/gta-v?p=${product.id}#catalogo`} aria-label={`Ver ${product.name}`}><AccessCard product={product} sizes="(max-width: 900px) 80vw, 38vw"/></StudioLink>
           <p>{product.description}</p>
