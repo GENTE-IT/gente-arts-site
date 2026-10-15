@@ -3,9 +3,21 @@ import Media from "../../components/Media";
 import StudioLink from "../../components/StudioLink";
 import Icon from "../../components/Icon";
 import ScrollMotion from "../../components/motion/ScrollMotion";
-import { products } from "../../data/products";
+import { products, fullName, categoryOf } from "../../data/products";
 
-export const metadata = { title: "GTA V", description: "Explora la colección de scripts, mapeados, sistemas y ropa para GTA V y FiveM.", alternates: { canonical: "/gta-v" } };
+const pageMetadata = { title: "GTA V", description: "Explora la colección de scripts, mapeados, sistemas y ropa para GTA V y FiveM.", alternates: { canonical: "/gta-v" } };
+
+// A shared link with ?p=<id> previews that card (title, description and the
+// card image from /og/[id]) instead of the generic page.
+export async function generateMetadata({ searchParams }) {
+  const { p } = await searchParams;
+  const product = products.find(product => product.id === p);
+  if (!product) return pageMetadata;
+  const title = fullName(product);
+  const description = `${categoryOf(product).label} para ${product.gameLabel} · ${product.serial}. ${product.description}`;
+  const image = { url: `/og/${product.id}`, width: 1200, height: 630, alt: `Tarjeta de acceso ${title}` };
+  return { ...pageMetadata, title, description, openGraph: { title: `${title} — GENTE.ARTS`, description, images: [image] }, twitter: { card: "summary_large_image", title, images: [image.url] } };
+}
 
 export default function GtaVPage() {
   return <main id="contenido">

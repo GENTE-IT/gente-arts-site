@@ -2,6 +2,7 @@
 
 import PulseHeart from "./reactbits/PulseHeart";
 import { useShop } from "./ShopProvider";
+import { fullName } from "../data/products";
 
 /*
  * "Me gusta" for a product. The count starts from the product's seed and the
@@ -19,6 +20,6 @@ export default function ProductLike({ product, size = 22, light = false }) {
     idleColor={light ? "#c9cec4" : "var(--muted)"}
     pillColor={light ? "#ffffff1f" : "var(--paper-2)"}
     textColor={light ? "#ffffff" : "var(--ink)"}
-    label={`Me gusta ${product.name}`}
+    label={`Me gusta ${fullName(product)}`}
   />;
 }

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { products, categoryOf } from "../data/products";
+import { products, categoryOf, fullName } from "../data/products";
 import Dialog from "./Dialog";
 import Media from "./Media";
 import Icon from "./Icon";
@@ -40,10 +40,10 @@ export default function ShopProvider({ children }) {
   const selected = cart.map(id => products.find(product => product.id === id)).filter(Boolean);
   const add = product => {
     setCart(current => current.includes(product.id) ? current : [...current, product.id]);
-    setNotice(cart.includes(product.id) ? "Este recurso ya está en tu selección." : `${product.name} añadido a tu selección.`);
+    setNotice(cart.includes(product.id) ? "Este recurso ya está en tu selección." : `${fullName(product)} añadido a tu selección.`);
   };
   const subject = encodeURIComponent("Consulta sobre mi selección GENTE.ARTS");
-  const body = encodeURIComponent("Hola, me gustaría recibir información sobre estos recursos:\n\n" + selected.map(product => "• " + product.name).join("\n"));
+  const body = encodeURIComponent("Hola, me gustaría recibir información sobre estos recursos:\n\n" + selected.map(product => "• " + fullName(product) + " (" + product.serial + ")").join("\n"));
   const isLiked = id => liked.includes(id);
   const likeCount = product => (product.likes || 0) + (liked.includes(product.id) ? 1 : 0);
   const toggleLike = (id, next) => setLiked(current => next ? (current.includes(id) ? current : [...current, id]) : current.filter(item => item !== id));
@@ -54,7 +54,7 @@ export default function ShopProvider({ children }) {
       <div className="cartInner">
         <header className="drawerHead"><div><p className="kicker">Tu selección · {String(selected.length).padStart(2, "0")}</p><h2 id="cart-title">Tu cesta.</h2></div><button className="iconButton" onClick={() => setOpen(false)} aria-label="Cerrar cesta"><Icon name="close"/></button></header>
         {selected.length ? <>
-          <div className="drawerItems">{selected.map(product => <article key={product.id}><Media src={product.image} alt={product.name} sizes="100px"/><div><small>{categoryOf(product).label} · {product.serial}</small><h3>{product.name}</h3><strong>{money(product.price)}</strong></div><button className="iconButton" onClick={() => setCart(current => current.filter(id => id !== product.id))} aria-label={`Quitar ${product.name}`}><Icon name="close" size={16}/></button></article>)}</div>
+          <div className="drawerItems">{selected.map(product => <article key={product.id}><Media src={product.image} alt={product.name} sizes="100px"/><div><small>{categoryOf(product).label} · {product.serial}</small><h3>{fullName(product)}</h3><strong>{money(product.price)}</strong></div><button className="iconButton" onClick={() => setCart(current => current.filter(id => id !== product.id))} aria-label={`Quitar ${product.name}`}><Icon name="close" size={16}/></button></article>)}</div>
           <div className="drawerFooter"><div className="cartTotal"><span>Total de muestra</span><strong>{money(selected.reduce((total, product) => total + product.price, 0))}</strong></div><p>Estamos preparando la apertura. Puedes guardar tu selección y consultar la disponibilidad por email.</p><a className="button darkButton full" href={`mailto:hola@gente.arts?subject=${subject}&body=${body}`}>Consultar selección <Icon name="diagonal"/></a><small>Las compras y los cobros aún no están habilitados.</small></div>
         </> : <div className="cartEmpty"><span className="emptyBag"><Icon name="bag" size={36}/></span><h3>Espacio para tus ideas.</h3><p>Explora GTA V y guarda los recursos que te interesan.</p><button className="button darkButton" onClick={() => setOpen(false)}>Seguir explorando <Icon name="arrow"/></button></div>}
       </div>

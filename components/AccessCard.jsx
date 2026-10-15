@@ -60,7 +60,7 @@ export default function AccessCard({ product, tilt = true, flipped = false, idle
           <span className="cardGrain" aria-hidden="true"/>
           <header className="cardHead"><Stripes width={34}/><span className="cardSerial">{product.serial}</span></header>
           <div className="cardTitle"><small>{category.label} · {product.gameLabel}</small><h3>{product.name}</h3></div>
-          <footer className="cardFoot"><Logo height={12}/><span>{product.edition}</span><strong>{money(product.price)}</strong></footer>
+          <footer className="cardFoot"><Logo height={12}/><span>{product.volume} · {product.edition}</span><strong>{money(product.price)}</strong></footer>
           <span className="cardSheen" aria-hidden="true"/>
         </div>
         <div className="cardFace cardBack">

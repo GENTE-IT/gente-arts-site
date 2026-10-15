@@ -13,8 +13,9 @@ export const metadata = {
   metadataBase: new URL("https://gente-arts-site-psi.vercel.app"),
   title: { default: "GENTE.ARTS — Tarjetas de acceso a recursos para GTA V", template: "%s | GENTE.ARTS" },
   description: "Estudio creativo digital. Mapeados, scripts, sistemas y ropa para servidores de GTA V y FiveM, entregados como tarjetas de acceso. GTA VI, próximamente.",
-  openGraph: { title: "GENTE.ARTS — Tu mundo. Tu manera.", description: "Recursos digitales para GTA con identidad propia.", locale: "es_ES", type: "website", images: [{ url: "/brand/gente-arts-final.png", width: 900, height: 900, alt: "GENTE.ARTS" }] },
-  twitter: { card: "summary", title: "GENTE.ARTS — Tu mundo. Tu manera.", images: ["/brand/gente-arts-final.png"] }
+  // Preview images come from app/opengraph-image.js (site) and /og/[id] (per card).
+  openGraph: { title: "GENTE.ARTS — Tu mundo. Tu manera.", description: "Recursos digitales para GTA con identidad propia.", locale: "es_ES", type: "website", siteName: "GENTE.ARTS" },
+  twitter: { card: "summary_large_image", title: "GENTE.ARTS — Tu mundo. Tu manera." }
 };
 
 export const viewport = { themeColor: [{ media: "(prefers-color-scheme: light)", color: "#f4f2ec" }, { media: "(prefers-color-scheme: dark)", color: "#0e100f" }], width: "device-width", initialScale: 1 };

@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import AccessCard from "./AccessCard";
 import Dialog from "./Dialog";
 import Icon from "./Icon";
+import Figures from "./brand/Figures";
 import { money, useShop } from "./ShopProvider";
-import { categoryOf } from "../data/products";
+import { categoryOf, fullName } from "../data/products";
 import ProductLike from "./ProductLike";
 import JellyRadio from "./reactbits/JellyRadio";
 
@@ -42,22 +43,22 @@ export default function ProductCatalog({ products }) {
     <div className="catalogControls" data-reveal="fade"><div className="filters"><JellyRadio items={filters.map(([value, label]) => ({ value, label: <>{label}<span className="filterCount">{products.filter(product => value === "all" || product.category === value).length}</span></> }))} value={filter} onChange={setFilter} ariaLabel="Filtrar catálogo" chipColor="var(--paper-2)" activeColor="var(--ink)" textColor="var(--nav-text)" activeTextColor="var(--ink-contrast)" size="md" gap={4} radius={18} swell={0.14} barge={4} shrink={0.04} jelly={1} bounce={0.28} stagger={20} stiffness={560}/></div><label className="search"><Icon name="search" size={18}/><input value={query} onChange={event => setQuery(event.target.value)} type="search" placeholder="Buscar una tarjeta…" aria-label="Buscar producto"/></label></div>
     <div className="catalogMeta"><p role="status" aria-live="polite">{visible.length} {visible.length === 1 ? "tarjeta" : "tarjetas"} <span>· Precios de muestra</span></p><label>Ordenar por <select value={sort} onChange={event => setSort(event.target.value)} aria-label="Ordenar productos"><option value="featured">Selección del estudio</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option><option value="name">Nombre A–Z</option></select></label></div>
     <div className="productGrid" data-batch>{visible.map((product, index) => <article className="productCard" key={product.id} style={{ "--i": index }}>
-      <button className="productOpen" onClick={() => open(product)} aria-label={`Ver la tarjeta de ${product.name}`}><AccessCard product={product} sizes="(max-width: 600px) 92vw, (max-width: 1100px) 46vw, 30vw"/></button>
-      <div className="productInfo"><div><h3><button onClick={() => open(product)}>{product.name}</button></h3><p className="productSummary">{product.description}</p></div><div className="productActions"><ProductLike product={product} size={20}/><button className={`quickAdd ${cart.includes(product.id) ? "isAdded" : ""}`} onClick={() => add(product)} aria-label={cart.includes(product.id) ? `${product.name} ya está en la cesta` : `Añadir ${product.name} a la cesta`}><Icon name={cart.includes(product.id) ? "check" : "plus"} size={18}/></button></div></div>
+      <button className="productOpen" onClick={() => open(product)} aria-label={`Ver la tarjeta de ${fullName(product)}`}><AccessCard product={product} sizes="(max-width: 600px) 92vw, (max-width: 1100px) 46vw, 30vw"/></button>
+      <div className="productInfo"><div><h3><button onClick={() => open(product)}>{fullName(product)}</button></h3><p className="productSummary">{product.description}</p></div><div className="productActions"><ProductLike product={product} size={20}/><button className={`quickAdd ${cart.includes(product.id) ? "isAdded" : ""}`} onClick={() => add(product)} aria-label={cart.includes(product.id) ? `${product.name} ya está en la cesta` : `Añadir ${product.name} a la cesta`}><Icon name={cart.includes(product.id) ? "check" : "plus"} size={18}/></button></div></div>
     </article>)}</div>
-    {!visible.length && <div className="emptyResults"><Icon name="search" size={32}/><h3>No encontramos esa tarjeta.</h3><p>Prueba con otro nombre o vuelve a la colección completa.</p><button className="button darkButton" onClick={reset}>Limpiar filtros <Icon name="refresh" size={18}/></button></div>}
+    {!visible.length && <div className="emptyResults"><Figures height={96}/><h3>No encontramos esa tarjeta.</h3><p>Prueba con otro nombre o vuelve a la colección completa.</p><button className="button darkButton" onClick={reset}>Limpiar filtros <Icon name="refresh" size={18}/></button></div>}
     <div className="catalogNotice" data-reveal="fade"><span className="statusDot"/><p>Estamos preparando la apertura. Los precios son de muestra y las tarjetas todavía no se pueden comprar ni activar.</p></div>
     {selected && <Dialog className="productDialog" labelId="product-title" onClose={() => setSelected(null)}><div className="productDialogInner">
       <button className="iconButton dialogClose" onClick={() => setSelected(null)} aria-label="Cerrar detalles"><Icon name="close"/></button>
       <div className="modalStage"><AccessCard product={selected} flipped={flipped} eager sizes="(max-width: 800px) 92vw, 50vw"/><button className="flipButton" onClick={() => setFlipped(value => !value)} aria-pressed={flipped}><Icon name="refresh" size={16}/>{flipped ? "Ver el frente" : "Girar la tarjeta"}</button></div>
       <div className="modalBody">
         <p className="kicker">{categoryOf(selected).label} · {selected.gameLabel} · {selected.serial}</p>
-        <h2 id="product-title">{selected.name}</h2>
+        <h2 id="product-title">{fullName(selected)}</h2>
         <p className="description">{selected.description}</p>
         <dl className="specs"><div><dt>Versión</dt><dd>v{selected.version}</dd></div><div><dt>Compatible con</dt><dd>{selected.compat.join(" · ")}</dd></div><div><dt>Entrega</dt><dd>{selected.delivery}</dd></div><div><dt>Edición</dt><dd>{selected.edition}</dd></div></dl>
         <div className="modalPrice"><strong>{money(selected.price)}</strong><ProductLike product={selected} size={22}/></div>
         <button className="button darkButton full" onClick={() => add(selected)}>{cart.includes(selected.id) ? "En tu selección" : "Guardar en mi cesta"}<Icon name={cart.includes(selected.id) ? "check" : "plus"}/></button>
-        <span className="srOnly" role="status" aria-live="polite">{cart.includes(selected.id) ? `${selected.name} guardado en tu cesta.` : ""}</span>
+        <span className="srOnly" role="status" aria-live="polite">{cart.includes(selected.id) ? `${fullName(selected)} guardado en tu cesta.` : ""}</span>
         <p className="previewNote">La licencia y las condiciones de uso se comunican antes de habilitar la compra de cada tarjeta.</p>
       </div>
     </div></Dialog>}
