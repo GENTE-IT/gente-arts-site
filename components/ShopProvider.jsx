@@ -14,6 +14,7 @@ const validCart = value => Array.isArray(value) ? [...new Set(value)].filter(id 
 
 export default function ShopProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const [liked, setLiked] = useState([]);
   const [ready, setReady] = useState(false);
   const [open, setOpen] = useState(false);
   const [notice, setNotice] = useState("");
@@ -21,6 +22,7 @@ export default function ShopProvider({ children }) {
 
   useEffect(() => {
     try { setCart(validCart(JSON.parse(localStorage.getItem("gente-cart") || "[]"))); } catch {}
+    try { setLiked(validCart(JSON.parse(localStorage.getItem("gente-likes") || "[]"))); } catch {}
     setReady(true);
     const sync = event => {
       if (event.key === "gente-cart" || event.key === null) {
@@ -31,6 +33,7 @@ export default function ShopProvider({ children }) {
     return () => window.removeEventListener("storage", sync);
   }, []);
   useEffect(() => { if (ready) { try { localStorage.setItem("gente-cart", JSON.stringify(cart)); } catch {} } }, [cart, ready]);
+  useEffect(() => { if (ready) { try { localStorage.setItem("gente-likes", JSON.stringify(liked)); } catch {} } }, [liked, ready]);
   useEffect(() => { setOpen(false); setNotice(""); }, [pathname]);
   useEffect(() => { if (!notice) return; const timer = setTimeout(() => setNotice(""), 3500); return () => clearTimeout(timer); }, [notice]);
 
@@ -41,7 +44,10 @@ export default function ShopProvider({ children }) {
   };
   const subject = encodeURIComponent("Consulta sobre mi selección GENTE.ARTS");
   const body = encodeURIComponent("Hola, me gustaría recibir información sobre estos recursos:\n\n" + selected.map(product => "• " + product.name).join("\n"));
-  return <ShopContext.Provider value={{ cart, add, openCart: () => setOpen(true) }}>
+  const isLiked = id => liked.includes(id);
+  const likeCount = product => (product.likes || 0) + (liked.includes(product.id) ? 1 : 0);
+  const toggleLike = (id, next) => setLiked(current => next ? (current.includes(id) ? current : [...current, id]) : current.filter(item => item !== id));
+  return <ShopContext.Provider value={{ cart, add, openCart: () => setOpen(true), isLiked, likeCount, toggleLike }}>
     {children}
     <div className={`toast ${notice ? "toastVisible" : ""}`} role="status" aria-live="polite">{notice && <><Icon name="check"/><span>{notice}</span></>}</div>
     {open && <Dialog onClose={() => setOpen(false)} className="cartDialog" labelId="cart-title">
