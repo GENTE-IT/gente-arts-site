@@ -8,6 +8,7 @@ import Icon from "./Icon";
 import { money, useShop } from "./ShopProvider";
 import { categoryOf } from "../data/products";
 import ProductLike from "./ProductLike";
+import JellyRadio from "./reactbits/JellyRadio";
 
 const filters = [["all", "Todo"], ["map", "Mapeados"], ["script", "Scripts"], ["system", "Sistemas"], ["clothing", "Ropa"]];
 const normalize = value => value.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
@@ -38,7 +39,7 @@ export default function ProductCatalog({ products }) {
   return <section className="catalogPageStore" id="catalogo" aria-labelledby="catalog-title">
     <Suspense fallback={null}><DeepLink products={products} onSelect={open}/></Suspense>
     <div className="sectionHeading"><div><p className="kicker" data-reveal="fade">La colección</p><h2 id="catalog-title" data-split>Siete tarjetas para empezar.</h2></div><p data-reveal>Cada tarjeta da acceso a un recurso, su documentación y sus actualizaciones.</p></div>
-    <div className="catalogControls" data-reveal="fade"><div className="filters" role="group" aria-label="Filtrar catálogo">{filters.map(([value, label]) => <button className={filter === value ? "active" : ""} aria-pressed={filter === value} onClick={() => setFilter(value)} key={value}>{label}<span>{products.filter(product => value === "all" || product.category === value).length}</span></button>)}</div><label className="search"><Icon name="search" size={18}/><input value={query} onChange={event => setQuery(event.target.value)} type="search" placeholder="Buscar una tarjeta…" aria-label="Buscar producto"/></label></div>
+    <div className="catalogControls" data-reveal="fade"><div className="filters"><JellyRadio items={filters.map(([value, label]) => ({ value, label: <>{label}<span className="filterCount">{products.filter(product => value === "all" || product.category === value).length}</span></> }))} value={filter} onChange={setFilter} ariaLabel="Filtrar catálogo" chipColor="#e9e6dd" activeColor="#141614" textColor="#4c524a" activeTextColor="#ffffff" size="md" gap={4} radius={18} swell={0.14} barge={4} shrink={0.04} jelly={1} bounce={0.28} stagger={20} stiffness={560}/></div><label className="search"><Icon name="search" size={18}/><input value={query} onChange={event => setQuery(event.target.value)} type="search" placeholder="Buscar una tarjeta…" aria-label="Buscar producto"/></label></div>
     <div className="catalogMeta"><p role="status" aria-live="polite">{visible.length} {visible.length === 1 ? "tarjeta" : "tarjetas"} <span>· Precios de muestra</span></p><label>Ordenar por <select value={sort} onChange={event => setSort(event.target.value)} aria-label="Ordenar productos"><option value="featured">Selección del estudio</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option><option value="name">Nombre A–Z</option></select></label></div>
     <div className="productGrid" data-batch>{visible.map((product, index) => <article className="productCard" key={product.id} style={{ "--i": index }}>
       <button className="productOpen" onClick={() => open(product)} aria-label={`Ver la tarjeta de ${product.name}`}><AccessCard product={product} sizes="(max-width: 600px) 92vw, (max-width: 1100px) 46vw, 30vw"/></button>
