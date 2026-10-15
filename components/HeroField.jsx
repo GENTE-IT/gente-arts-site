@@ -4,11 +4,12 @@ import { useEffect, useRef } from "react";
 import { gsap } from "./motion/gsap";
 
 /*
- * Interactive dot field. A grid of dots lights up and swells near the pointer;
- * a click or tap drops a ripple that travels outward and displaces the dots
- * like water. Plain 2D canvas driven by the GSAP ticker (so it pauses with
- * the page and shares one frame loop). Under prefers-reduced-motion the grid
- * is drawn once and left still.
+ * Interactive dot field. The grid breathes like a water surface: three slow
+ * travelling waves modulate each dot's size, brightness and position. Dots
+ * light up and swell near the pointer, and a click or tap drops a ripple that
+ * travels outward. Plain 2D canvas on the GSAP ticker (pauses with the page,
+ * one shared frame loop). Under prefers-reduced-motion the grid is drawn
+ * once and left still.
  */
 const SPACING = 14, SIGMA = 170, RIPPLE_SPEED = 0.46, RIPPLE_WIDTH = 46, RIPPLE_LIFE = 3000;
 
@@ -18,7 +19,7 @@ export default function HeroField({ className = "" }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d", { alpha: true });
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const state = { w: 0, h: 0, dpr: 1, dots: [], pointer: { x: -9999, y: -9999, active: false }, ripples: [], lastAmbient: 0 };
+    const state = { w: 0, h: 0, dpr: 1, dots: [], pointer: { x: -9999, y: -9999, active: false }, ripples: [] };
 
     const build = () => {
       const rect = canvas.parentElement.getBoundingClientRect();
@@ -39,8 +40,12 @@ export default function HeroField({ className = "" }) {
       ctx.clearRect(0, 0, w, h);
       for (let i = ripples.length - 1; i >= 0; i--) if (now - ripples[i].t0 > RIPPLE_LIFE) ripples.splice(i, 1);
       const twoSigma = 2 * SIGMA * SIGMA, twoWidth = 2 * RIPPLE_WIDTH * RIPPLE_WIDTH;
+      const t = now;
       for (const dot of dots) {
-        let x = dot.x, y = dot.y, glow = 0, scale = 1;
+        // slow travelling waves: the resting surface of the field
+        const swell = Math.sin(dot.x * 0.011 + t * 0.00085) * Math.cos(dot.y * 0.009 - t * 0.0007) + 0.55 * Math.sin((dot.x - dot.y) * 0.006 + t * 0.00055);
+        const level = (swell / 1.55 + 1) / 2; // 0..1
+        let x = dot.x, y = dot.y + swell * 2.4, glow = level * 0.42, scale = 0.85 + level * 0.9;
         if (pointer.active) {
           const dx = dot.x - pointer.x, dy = dot.y - pointer.y, d2 = dx * dx + dy * dy;
           const influence = Math.exp(-d2 / twoSigma);
@@ -57,8 +62,8 @@ export default function HeroField({ className = "" }) {
           x += (dx / d) * amp; y += (dy / d) * amp;
           glow += band * 1.2; scale += band * 1.4;
         }
-        const alpha = Math.min(0.98, 0.22 + glow * 0.85);
-        const radius = 1.05 * Math.min(scale, 3.4);
+        const alpha = Math.min(0.98, 0.1 + glow * 0.9);
+        const radius = 1.05 * Math.min(scale, 3.6);
         // deep brand blue at rest, electric cyan where the pointer or a ripple passes
         const mix = Math.min(1, glow);
         ctx.fillStyle = `rgba(${Math.round(52 + 110 * mix)}, ${Math.round(126 + 90 * mix)}, ${Math.round(168 + 87 * mix)}, ${alpha})`;
@@ -66,12 +71,7 @@ export default function HeroField({ className = "" }) {
       }
     };
 
-    const tick = () => {
-      const now = performance.now();
-      // an ambient ripple now and then so the field feels alive before any interaction
-      if (now - state.lastAmbient > 3600) { state.lastAmbient = now; state.ripples.push({ x: state.w * (0.25 + Math.random() * 0.5), y: state.h * (0.25 + Math.random() * 0.5), t0: now }); }
-      draw();
-    };
+    const tick = () => draw();
 
     const toLocal = event => { const rect = canvas.getBoundingClientRect(); return { x: event.clientX - rect.left, y: event.clientY - rect.top }; };
     const onMove = event => { const p = toLocal(event); state.pointer.x = p.x; state.pointer.y = p.y; state.pointer.active = true; };

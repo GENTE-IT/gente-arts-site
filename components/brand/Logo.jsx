@@ -1,9 +1,9 @@
 import { useId } from "react";
 import { WORDMARK_VIEWBOX, GENTE_PATH, ARTS_PATH } from "./paths";
 
-// Traced glyph bounds: GENTE spans x 5-1124, the dot 1139-1191, ARTS 1210-1796 (y 61-201).
-const GENTE_BOX = "0 0 1200 217";
-const ARTS_BOX = "1205 55 595 155";
+// Traced glyph bounds (3600-wide trace): GENTE spans x 0-2245, the dot 2271-2399, ARTS 2414-3602 (y 122-404).
+const GENTE_BOX = "0 0 2405 440";
+const ARTS_BOX = "2410 112 1192 300";
 
 /*
  * The GENTE.ARTS wordmark, traced from the original artwork. "GENTE." takes
@@ -16,8 +16,8 @@ export default function Logo({ height = 22, mono = false, stacked = false, class
   const artsFill = mono ? "currentColor" : `url(#stripes-${id})`;
   if (stacked) {
     return <span className={`logo logoStacked ${className}`} role="img" aria-label={title}>
-      <svg viewBox={GENTE_BOX} height={height} width={(height * 1200) / 217} aria-hidden="true"><path d={GENTE_PATH} fill="currentColor"/><path d={ARTS_PATH} fill={mono ? "currentColor" : "var(--blue)"}/></svg>
-      <svg viewBox={ARTS_BOX} height={height * 0.8} width={(height * 0.8 * 595) / 155} aria-hidden="true">{gradient}<path d={ARTS_PATH} fill={artsFill}/></svg>
+      <svg viewBox={GENTE_BOX} height={height} width={(height * 2405) / 440} aria-hidden="true"><path d={GENTE_PATH} fill="currentColor"/><path d={ARTS_PATH} fill={mono ? "currentColor" : "var(--blue)"}/></svg>
+      <svg viewBox={ARTS_BOX} height={height * 0.8} width={(height * 0.8 * 1192) / 300} aria-hidden="true">{gradient}<path d={ARTS_PATH} fill={artsFill}/></svg>
     </span>;
   }
   const [, , w, h] = WORDMARK_VIEWBOX.split(" ").map(Number);
