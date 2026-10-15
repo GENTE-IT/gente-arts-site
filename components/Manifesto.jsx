@@ -34,9 +34,9 @@ export default function Manifesto() {
 
   return <section className="manifesto" ref={root} aria-labelledby="store-manifesto">
     <div className="manifestoReader">
-      <aside className="manifestoSide" aria-hidden="true"><span>GENTE.ARTS<br/>MANIFIESTO 01</span><div className="manifestoRail"><i/></div><span>EL DETALLE<br/>IMPORTA</span></aside>
+      <aside className="manifestoSide" aria-hidden="true"><span>GENTE.ARTS<br/>Manifiesto 01</span><div className="manifestoRail"><i/></div><span>El detalle<br/>importa</span></aside>
       <h2 className="manifestoText" id="store-manifesto">{text}</h2>
-      <aside className="manifestoSide manifestoMeasure" aria-hidden="true"><span>SIGUE<br/>EXPLORANDO</span><div className="manifestoCount"><span className="manifestoPercent">00</span><small>% LEÍDO</small></div><span className="manifestoAccent">DISEÑO DIGITAL<br/>SIN RUIDO</span></aside>
+      <aside className="manifestoSide manifestoMeasure" aria-hidden="true"><span>Sigue<br/>explorando</span><div className="manifestoCount"><span className="manifestoPercent">00</span><small>% leído</small></div><span className="manifestoAccent">Diseño digital,<br/>sin ruido</span></aside>
     </div>
   </section>;
 }

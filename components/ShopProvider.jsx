@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { products } from "../data/products";
+import { products, categoryOf } from "../data/products";
 import Dialog from "./Dialog";
 import Media from "./Media";
 import Icon from "./Icon";
@@ -46,9 +46,9 @@ export default function ShopProvider({ children }) {
     <div className={`toast ${notice ? "toastVisible" : ""}`} role="status" aria-live="polite">{notice && <><Icon name="check"/><span>{notice}</span></>}</div>
     {open && <Dialog onClose={() => setOpen(false)} className="cartDialog" labelId="cart-title">
       <div className="cartInner">
-        <header className="drawerHead"><div><p className="eyebrow">TU SELECCIÓN · {String(selected.length).padStart(2, "0")}</p><h2 id="cart-title">Tu cesta.</h2></div><button className="iconButton" onClick={() => setOpen(false)} aria-label="Cerrar cesta"><Icon name="close"/></button></header>
+        <header className="drawerHead"><div><p className="kicker">Tu selección · {String(selected.length).padStart(2, "0")}</p><h2 id="cart-title">Tu cesta.</h2></div><button className="iconButton" onClick={() => setOpen(false)} aria-label="Cerrar cesta"><Icon name="close"/></button></header>
         {selected.length ? <>
-          <div className="drawerItems">{selected.map(product => <article key={product.id}><Media src={product.image} alt={product.name} sizes="100px"/><div><small>{product.label}</small><h3>{product.name}</h3><strong>{money(product.price)}</strong></div><button className="iconButton" onClick={() => setCart(current => current.filter(id => id !== product.id))} aria-label={`Quitar ${product.name}`}><Icon name="close" size={16}/></button></article>)}</div>
+          <div className="drawerItems">{selected.map(product => <article key={product.id}><Media src={product.image} alt={product.name} sizes="100px"/><div><small>{categoryOf(product).label} · {product.serial}</small><h3>{product.name}</h3><strong>{money(product.price)}</strong></div><button className="iconButton" onClick={() => setCart(current => current.filter(id => id !== product.id))} aria-label={`Quitar ${product.name}`}><Icon name="close" size={16}/></button></article>)}</div>
           <div className="drawerFooter"><div className="cartTotal"><span>Total de muestra</span><strong>{money(selected.reduce((total, product) => total + product.price, 0))}</strong></div><p>Estamos preparando la apertura. Puedes guardar tu selección y consultar la disponibilidad por email.</p><a className="button darkButton full" href={`mailto:hola@gente.arts?subject=${subject}&body=${body}`}>Consultar selección <Icon name="diagonal"/></a><small>Las compras y los cobros aún no están habilitados.</small></div>
         </> : <div className="cartEmpty"><span className="emptyBag"><Icon name="bag" size={36}/></span><h3>Espacio para tus ideas.</h3><p>Explora GTA V y guarda los recursos que te interesan.</p><button className="button darkButton" onClick={() => setOpen(false)}>Seguir explorando <Icon name="arrow"/></button></div>}
       </div>

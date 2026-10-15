@@ -2,50 +2,49 @@
 
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP, MOTION_OK } from "./motion/gsap";
-import Media from "./Media";
+import AccessCard from "./AccessCard";
+import Figures from "./brand/Figures";
 import Icon from "./Icon";
+import StudioLink from "./StudioLink";
 
 /*
- * Opening scene. An intro timeline builds the wordmark letter by letter, then
- * a scrubbed timeline parallaxes and fades the content as the hero leaves.
+ * Opening scene: the claim on the left, the featured access card on the right.
+ * The card settles in from a tilt, then scroll scrubs it away with parallax.
  */
-export default function BrandHero() {
+export default function BrandHero({ product }) {
   const root = useRef(null);
   useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const el = root.current;
-      const wordmark = el.querySelector(".heroWordmark");
-      const split = SplitText.create(wordmark, { type: "chars", charsClass: "heroChar" });
-      const intro = gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.15 });
+      const title = SplitText.create(el.querySelector(".heroTitle"), { type: "lines,words", mask: "lines", linesClass: "splitLine", wordsClass: "splitWord" });
+      const intro = gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.1 });
       intro
-        .from(".heroBackdrop", { scale: 1.12, autoAlpha: 0, duration: 2.2, ease: "power2.out" }, 0)
-        .from(split.chars, { yPercent: 105, rotate: 4, duration: 1.3, stagger: 0.045 }, 0.1)
-        .from(".heroFigures", { y: 60, autoAlpha: 0, duration: 1.4 }, 0.45)
-        .from(".heroMeta > *", { y: -14, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.7)
-        .from(".heroFoot > *", { y: 26, autoAlpha: 0, duration: 1, stagger: 0.12 }, 0.85)
-        .from(".heroRule", { scaleX: 0, duration: 1.2, ease: "power3.inOut" }, 0.9);
-
+        .from(title.words, { yPercent: 110, duration: 1.2, stagger: 0.05 }, 0)
+        .from(".heroKicker, .heroLead, .heroActions > *", { y: 24, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.35)
+        .from(".heroCard", { y: 80, rotation: 8, autoAlpha: 0, duration: 1.5, ease: "power3.out" }, 0.2)
+        .from(".heroCard .cardBody", { rotationY: -35, rotationX: 12, duration: 1.8, ease: "power3.out" }, 0.2)
+        .from(".heroFigures", { x: 40, autoAlpha: 0, duration: 1.2 }, 0.8)
+        .from(".heroMeta > *", { autoAlpha: 0, y: 10, duration: 0.8, stagger: 0.1 }, 0.9);
       gsap.timeline({ scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } })
-        .to(".heroStage", { yPercent: 28, ease: "none" }, 0)
-        .to(".heroFoot, .heroMeta", { autoAlpha: 0, y: -30, ease: "none" }, 0)
-        .to(".heroBackdrop", { yPercent: 18, ease: "none" }, 0);
-      return () => split.revert();
+        .to(".heroCard", { yPercent: 30, rotation: -6, ease: "none" }, 0)
+        .to(".heroCopy", { yPercent: 18, autoAlpha: 0, ease: "none" }, 0)
+        .to(".heroFigures", { yPercent: 60, ease: "none" }, 0);
+      return () => title.revert();
     });
   }, { scope: root });
 
-  return <section className="brandHero" id="inicio" ref={root}>
-    <div className="heroBackdrop" aria-hidden="true"><Media src="/assets/los-santos-night.jpg" alt="" eager sizes="100vw" position="50% 40%"/></div>
-    <div className="heroMeta"><span><i className="statusDot"/> ESTUDIO CREATIVO DIGITAL</span><span>VOL. 01 — GTA V / GTA VI</span><span>IDENTIDAD EN CADA PÍXEL</span></div>
+  return <section className="brandHero grain" id="inicio" ref={root}>
+    <div className="heroCopy">
+      <p className="heroKicker"><span className="kickerDot"/>Estudio creativo digital para GTA V y GTA VI</p>
+      <h1 className="heroTitle">Tu mundo.<br/>Tu manera.</h1>
+      <p className="heroLead">Mapeados, scripts, sistemas y ropa para servidores de GTA V, entregados como tarjetas de acceso. Compras la tarjeta, la activas y descargas los archivos.</p>
+      <div className="heroActions"><StudioLink className="button lightButton" href="/gta-v#catalogo">Ver la colección <Icon name="arrow"/></StudioLink><a className="button ghostButton" href="#como-funciona">Cómo funciona <Icon name="down"/></a></div>
+    </div>
     <div className="heroStage">
-      <img className="heroFigures" src="/brand/figures.png" alt="" width="295" height="405" fetchPriority="high" aria-hidden="true"/>
-      <h1 className="heroWordmark" aria-label="GENTE.ARTS"><span className="heroGente">GENTE.</span><span className="heroArts">ARTS</span></h1>
+      <div className="heroCard"><AccessCard product={product} idle eager sizes="(max-width: 900px) 92vw, 44vw"/></div>
+      <Figures className="heroFigures" height={200}/>
     </div>
-    <div className="heroRule" aria-hidden="true"/>
-    <div className="heroFoot">
-      <p className="heroClaim"><span className="eyebrow">PARA QUIENES CREAN</span>Tu mundo.<br/><em>Tu manera.</em></p>
-      <p className="heroLead">Mapeados, scripts, sistemas y ropa para servidores de GTA V con identidad propia. El siguiente capítulo, GTA VI, ya está en marcha.</p>
-      <a className="heroExplore" href="#universos"><span>Encuentra tu universo</span><span className="circleArrow"><Icon name="down"/></span></a>
-    </div>
+    <div className="heroMeta"><span>07 tarjetas · GTA V</span><span>Soporte por email</span><span>GTA VI en preparación</span></div>
   </section>;
 }
