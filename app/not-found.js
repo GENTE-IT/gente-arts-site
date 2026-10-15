@@ -1,7 +1,7 @@
 import StudioLink from "../components/StudioLink";
 import Icon from "../components/Icon";
 
-export const metadata = { title: "404 — Fuera del mapa | GENTE.ARTS" };
+export const metadata = { title: "404 — Fuera del mapa" };
 
 export default function NotFound() {
   return <main className="errorPage" id="contenido">

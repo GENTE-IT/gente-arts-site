@@ -1,36 +1,51 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef } from "react";
+import { gsap, SplitText, useGSAP, MOTION_OK } from "./motion/gsap";
+import Media from "./Media";
 import Icon from "./Icon";
 
+/*
+ * Opening scene. An intro timeline builds the wordmark letter by letter, then
+ * a scrubbed timeline parallaxes and fades the content as the hero leaves.
+ */
 export default function BrandHero() {
-  const [posterFailed, setPosterFailed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const [slow, setSlow] = useState(false);
-  const [paused, setPaused] = useState(false);
-  const [reduced, setReduced] = useState(true);
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduced(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
-  useEffect(() => {
-    if (reduced || paused || loaded || failed) return;
-    const timer = setTimeout(() => setSlow(true), 8000);
-    return () => clearTimeout(timer);
-  }, [reduced, paused, loaded, failed]);
-  const animated = !reduced && !paused && !failed;
-  return <section className="brandHero" id="inicio">
-    <h1 className="srOnly">GENTE.ARTS — Recursos digitales para mundos abiertos</h1>
-    <div className="brandHeroMeta"><span><i className="statusDot"/> ESTUDIO CREATIVO DIGITAL</span><span>IDENTIDAD EN CADA PÍXEL</span></div>
+  const root = useRef(null);
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const el = root.current;
+      const wordmark = el.querySelector(".heroWordmark");
+      const split = SplitText.create(wordmark, { type: "chars", charsClass: "heroChar" });
+      const intro = gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.15 });
+      intro
+        .from(".heroBackdrop", { scale: 1.12, autoAlpha: 0, duration: 2.2, ease: "power2.out" }, 0)
+        .from(split.chars, { yPercent: 105, rotate: 4, duration: 1.3, stagger: 0.045 }, 0.1)
+        .from(".heroFigures", { y: 60, autoAlpha: 0, duration: 1.4 }, 0.45)
+        .from(".heroMeta > *", { y: -14, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.7)
+        .from(".heroFoot > *", { y: 26, autoAlpha: 0, duration: 1, stagger: 0.12 }, 0.85)
+        .from(".heroRule", { scaleX: 0, duration: 1.2, ease: "power3.inOut" }, 0.9);
+
+      gsap.timeline({ scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } })
+        .to(".heroStage", { yPercent: 28, ease: "none" }, 0)
+        .to(".heroFoot, .heroMeta", { autoAlpha: 0, y: -30, ease: "none" }, 0)
+        .to(".heroBackdrop", { yPercent: 18, ease: "none" }, 0);
+      return () => split.revert();
+    });
+  }, { scope: root });
+
+  return <section className="brandHero" id="inicio" ref={root}>
+    <div className="heroBackdrop" aria-hidden="true"><Media src="/assets/los-santos-night.jpg" alt="" eager sizes="100vw" position="50% 40%"/></div>
+    <div className="heroMeta"><span><i className="statusDot"/> ESTUDIO CREATIVO DIGITAL</span><span>VOL. 01 — GTA V / GTA VI</span><span>IDENTIDAD EN CADA PÍXEL</span></div>
     <div className="heroStage">
-      {posterFailed ? <div className="heroWordmark" aria-label="GENTE.ARTS">GENTE.<span className="brandArts">ARTS</span></div> : <img className={`heroPoster ${animated && loaded ? "posterHidden" : ""}`} src="/brand/gente-arts-final.png" alt={animated && loaded ? "" : "GENTE.ARTS"} width="900" height="900" fetchPriority="high" onError={() => setPosterFailed(true)}/>}
-      {animated && <img className={`heroAnimation ${loaded ? "isReady" : ""}`} src="/brand/gente-arts-estela.webp" alt="Animación del logotipo GENTE.ARTS" width="900" height="900" onLoad={() => setLoaded(true)} onError={() => setFailed(true)}/>}
+      <img className="heroFigures" src="/brand/figures.png" alt="" width="295" height="405" fetchPriority="high" aria-hidden="true"/>
+      <h1 className="heroWordmark" aria-label="GENTE.ARTS"><span className="heroGente">GENTE.</span><span className="heroArts">ARTS</span></h1>
     </div>
-    <div className="heroPlayback">{animated && !loaded ? <span className="heroLoading" role="status"><span className="tinySpinner"/>{slow ? "La animación tarda un poco. Puedes seguir explorando." : "Preparando la animación"}</span> : <span className="heroEdition">GENTE.ARTS — VOL. 01</span>}{!reduced && !failed && <button onClick={() => setPaused(value => !value)} aria-label={paused ? "Reproducir animación" : "Pausar animación"}><Icon name={paused ? "play" : "pause"} size={14}/></button>}</div>
-    <div className="brandHeroFoot"><div><span className="eyebrow">PARA QUIENES CREAN</span><p>Tu mundo.<br/><em>Tu manera.</em></p></div><a className="heroExplore" href="#universos"><span>Encuentra tu universo</span><span className="circleArrow"><Icon name="down"/></span></a></div>
+    <div className="heroRule" aria-hidden="true"/>
+    <div className="heroFoot">
+      <p className="heroClaim"><span className="eyebrow">PARA QUIENES CREAN</span>Tu mundo.<br/><em>Tu manera.</em></p>
+      <p className="heroLead">Mapeados, scripts, sistemas y ropa para servidores de GTA V con identidad propia. El siguiente capítulo, GTA VI, ya está en marcha.</p>
+      <a className="heroExplore" href="#universos"><span>Encuentra tu universo</span><span className="circleArrow"><Icon name="down"/></span></a>
+    </div>
   </section>;
 }
