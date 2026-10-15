@@ -54,7 +54,7 @@ export default function BrandHero() {
   }, { scope: root });
 
   return <section className="brandHero" id="inicio" ref={root}>
-    <div className="heroLight" aria-hidden="true"><Lightfall lightMode={!dark} colors={dark ? ["#ffffff", "#ffffff", "#bfe3ff", "#f0b43c"] : ["#141614", "#3f8fb0", "#e2693f", "#f0b43c"]} backgroundColor="#3f8fb0" speed={0.26} streakCount={3} streakWidth={0.9} streakLength={1.1} twinkle={0.3} backgroundGlow={0} headGlow={dark ? 0.6 : 0.5} bloom={0.4} depth={0.55} fade={0.3} opacity={0.95} mouseInteraction holdToWarp intro/></div>
+    <div className="heroLight" aria-hidden="true"><Lightfall lightMode={!dark} colors={dark ? ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#9cccff", "#9cccff", "#f0b43c"] : ["#141614", "#3f8fb0", "#e2693f", "#f0b43c"]} backgroundColor="#3f8fb0" speed={0.26} streakCount={3} streakWidth={0.9} streakLength={1.1} twinkle={0.3} backgroundGlow={0} headGlow={dark ? 0.6 : 0.5} bloom={0.4} depth={0.55} fade={0.3} opacity={0.95} mouseInteraction holdToWarp intro/></div>
     <h1 className="srOnly">GENTE.ARTS — Tu mundo. Tu manera.</h1>
     <div className="heroMeta"><span><i className="kickerDot"/>Estudio creativo digital</span><span>Vol. 01 · GTA V / GTA VI</span><span>Tarjetas de acceso a recursos</span></div>
     <div className="heroStage">
