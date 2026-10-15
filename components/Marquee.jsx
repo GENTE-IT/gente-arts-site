@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from "./motion/gsap";
-import Icon from "./Icon";
+import Stripes from "./brand/Stripes";
 
-const items = ["MAPEADOS", "SCRIPTS", "ROPA", "SISTEMAS", "FIVEM", "OTRAS FORMAS DE CREAR"];
+const items = ["Mapeados", "Scripts", "Ropa", "Sistemas", "FiveM", "GTA V", "GTA VI próximamente"];
 
 /*
  * Infinite ticker. The track is duplicated and translated -50% on loop; scroll
@@ -28,7 +28,7 @@ export default function Marquee({ dark = false }) {
       return () => loop.kill();
     });
   }, { scope: root });
-  const group = <>{items.map(item => <span key={item}>{item}<Icon name="diagonal" size={14}/></span>)}</>;
+  const group = <>{items.map(item => <span key={item}>{item}<Stripes width={14}/></span>)}</>;
   return <div className={`marquee ${dark ? "marqueeDark" : ""}`} ref={root} aria-label="Especialidades del estudio">
     <div className="marqueeTrack" aria-hidden="true">{group}{group}</div>
     <span className="srOnly">{items.join(", ")}</span>
