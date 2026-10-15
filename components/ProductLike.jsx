@@ -16,9 +16,9 @@ export default function ProductLike({ product, size = 22, light = false }) {
     size={size}
     corner={999}
     likedColor="#e2693f"
-    idleColor={light ? "#c9cec4" : "#8a8f86"}
-    pillColor={light ? "#ffffff1f" : "#eceae2"}
-    textColor={light ? "#ffffff" : "#141614"}
+    idleColor={light ? "#c9cec4" : "var(--muted)"}
+    pillColor={light ? "#ffffff1f" : "var(--paper-2)"}
+    textColor={light ? "#ffffff" : "var(--ink)"}
     label={`Me gusta ${product.name}`}
   />;
 }
