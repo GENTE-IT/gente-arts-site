@@ -22,7 +22,7 @@ export default function BrandHero() {
       const intro = gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.1 });
       intro
         .from(".heroMark", { y: 70, autoAlpha: 0, duration: 1.4 }, 0)
-        .from(".heroMark .logo path", { yPercent: 40, autoAlpha: 0, duration: 1.3, stagger: 0.18 }, 0.1)
+        .from(".heroMark svg", { yPercent: 45, autoAlpha: 0, duration: 1.3, stagger: 0.16 }, 0.1)
         .from(".heroFigures", { x: -50, autoAlpha: 0, duration: 1.4 }, 0.35)
         .from(".heroMeta > *", { y: -12, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 0.7)
         .from(".heroRule", { scaleX: 0, duration: 1.2, ease: "power3.inOut" }, 0.8)
@@ -38,8 +38,8 @@ export default function BrandHero() {
     <HeroField/>
     <div className="heroMeta"><span><i className="kickerDot"/>Estudio creativo digital</span><span>Vol. 01 · GTA V / GTA VI</span><span>Tarjetas de acceso a recursos</span></div>
     <div className="heroStage">
-      <Figures className="heroFigures" height={300}/>
-      <h1 className="heroMark"><Logo height={150} title="GENTE.ARTS"/></h1>
+      <Figures className="heroFigures" height={340}/>
+      <h1 className="heroMark"><Logo stacked height={150} title="GENTE.ARTS"/></h1>
     </div>
     <div className="heroRule" aria-hidden="true"/>
     <div className="heroFoot">

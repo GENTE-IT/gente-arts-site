@@ -10,7 +10,7 @@ import { gsap } from "./motion/gsap";
  * the page and shares one frame loop). Under prefers-reduced-motion the grid
  * is drawn once and left still.
  */
-const SPACING = 26, SIGMA = 130, RIPPLE_SPEED = 0.42, RIPPLE_WIDTH = 38, RIPPLE_LIFE = 2600;
+const SPACING = 14, SIGMA = 170, RIPPLE_SPEED = 0.46, RIPPLE_WIDTH = 46, RIPPLE_LIFE = 3000;
 
 export default function HeroField({ className = "" }) {
   const canvasRef = useRef(null);
@@ -44,8 +44,8 @@ export default function HeroField({ className = "" }) {
         if (pointer.active) {
           const dx = dot.x - pointer.x, dy = dot.y - pointer.y, d2 = dx * dx + dy * dy;
           const influence = Math.exp(-d2 / twoSigma);
-          glow += influence; scale += influence * 1.6;
-          const push = influence * 10, d = Math.sqrt(d2) || 1;
+          glow += influence; scale += influence * 1.9;
+          const push = influence * 14, d = Math.sqrt(d2) || 1;
           x += (dx / d) * push; y += (dy / d) * push;
         }
         for (const ripple of ripples) {
@@ -53,15 +53,15 @@ export default function HeroField({ className = "" }) {
           const dx = dot.x - ripple.x, dy = dot.y - ripple.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
           const band = Math.exp(-((d - radius) * (d - radius)) / twoWidth) * Math.exp(-age / 900);
           if (band < 0.003) continue;
-          const amp = band * 22;
+          const amp = band * 26;
           x += (dx / d) * amp; y += (dy / d) * amp;
           glow += band * 1.2; scale += band * 1.4;
         }
-        const alpha = Math.min(0.95, 0.16 + glow * 0.8);
-        const radius = 1.15 * Math.min(scale, 3.2);
-        // warm up the colour with the glow: neutral grey -> amber
+        const alpha = Math.min(0.98, 0.22 + glow * 0.85);
+        const radius = 1.05 * Math.min(scale, 3.4);
+        // deep brand blue at rest, electric cyan where the pointer or a ripple passes
         const mix = Math.min(1, glow);
-        ctx.fillStyle = `rgba(${Math.round(190 + 50 * mix)}, ${Math.round(195 - 15 * mix)}, ${Math.round(185 - 125 * mix)}, ${alpha})`;
+        ctx.fillStyle = `rgba(${Math.round(52 + 110 * mix)}, ${Math.round(126 + 90 * mix)}, ${Math.round(168 + 87 * mix)}, ${alpha})`;
         ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
       }
     };
@@ -69,7 +69,7 @@ export default function HeroField({ className = "" }) {
     const tick = () => {
       const now = performance.now();
       // an ambient ripple now and then so the field feels alive before any interaction
-      if (now - state.lastAmbient > 5200) { state.lastAmbient = now; state.ripples.push({ x: state.w * (0.25 + Math.random() * 0.5), y: state.h * (0.25 + Math.random() * 0.5), t0: now }); }
+      if (now - state.lastAmbient > 3600) { state.lastAmbient = now; state.ripples.push({ x: state.w * (0.25 + Math.random() * 0.5), y: state.h * (0.25 + Math.random() * 0.5), t0: now }); }
       draw();
     };
 
