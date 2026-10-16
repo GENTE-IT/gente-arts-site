@@ -24,7 +24,7 @@ export async function generateMetadata({ searchParams }) {
 export default function GtaVPage() {
   return <main id="contenido">
     <section className="catalogHero gtaVHero" data-parallax-box>
-      <Media src="/assets/los-santos-night.jpg" alt="Los Santos de noche" eager parallax={0.1} scale position="50% 30%"/>
+      <Media src="/assets/gta-v-hero.jpg" alt="Los Santos de noche" eager parallax={0.1} scale position="50% 45%"/>
       <div className="catalogHeroShade"/>
       <div className="catalogHeroTop"><StudioLink href="/"><Icon name="back" size={16}/> Universos</StudioLink><span>01 · Tienda abierta</span></div>
       <div className="catalogHeroCopy"><div><p className="kicker kickerLight" data-reveal="fade">FiveM · ESX / QBCore</p><h1 data-split>GTA V.</h1></div><div data-reveal><p>Scripts, mapeados y ropa<br/>para tu servidor.</p><a href="#catalogo" className="circleArrow" aria-label="Ir a la tienda"><Icon name="down"/></a></div></div>

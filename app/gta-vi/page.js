@@ -16,7 +16,7 @@ const plans = [
 export default function GtaViPage() {
   return <main id="contenido">
     <section className="catalogHero gtaViHero" data-parallax-box>
-      <Media src="/assets/gta-vi-key.jpg" alt="Ilustración oficial del universo GTA VI" eager parallax={0.1} scale position="50% 35%"/>
+      <Media src="/assets/gta-vi-hero.jpg" alt="Jason y Lucía, ilustración oficial de GTA VI" eager parallax={0.1} scale position="50% 30%"/>
       <div className="catalogHeroShade"/><div className="catalogHeroTop"><StudioLink href="/"><Icon name="back" size={16}/> Universos</StudioLink><span>02 · El siguiente capítulo</span></div>
       <div className="catalogHeroCopy"><div><p className="kicker kickerLight" data-reveal="fade">Nuevos lugares, nuevas ideas</p><h1 data-split>GTA VI.</h1></div><span className="glassPill" data-reveal>Próximamente</span></div>
       <Raya className="heroRaya"/>
