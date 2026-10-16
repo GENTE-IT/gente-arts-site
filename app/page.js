@@ -30,7 +30,7 @@ export default function Home() {
       <div className="studioPrinciples" data-reveal-group>{principles.map(([title, copy], index) => <div key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{copy}</p></div><Icon name="diagonal" size={18}/></div>)}</div>
     </section>
     <section className="support grain" data-parallax-box>
-      <div className="supportBackdrop" aria-hidden="true"><Media src="/assets/los-santos-sunset.jpg" alt="" sizes="100vw" parallax={0.1} position="50% 60%"/></div>
+      <div className="supportBackdrop" aria-hidden="true"><Media src="/assets/vice-city-sunset.jpg" alt="" sizes="100vw" parallax={0.1} position="50% 40%"/></div>
       <div className="supportInner">
         <p className="kicker kickerLight" data-reveal="fade">A medida</p>
         <h2 data-split>¿Necesitas algo a medida?</h2>
