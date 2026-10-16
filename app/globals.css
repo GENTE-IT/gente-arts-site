@@ -539,14 +539,14 @@ dialog::backdrop { background: #0d120fb3; backdrop-filter: blur(8px); animation:
 .loadingBar { width: min(420px, 100%); height: 6px; background: var(--paper-2); overflow: hidden; margin: 6px 0; }
 .loadingBar .raya { height: 100%; transform-origin: left; animation: fillBar 1.6s cubic-bezier(.4,0,.2,1) infinite; }
 @keyframes fillBar { 0% { transform: scaleX(0); opacity: 1; } 75% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
-.gameVisualFlat { background: var(--noche); color: #fff; }
-.gameVisual-negative { background: var(--papel); color: var(--noche); border: 1px solid var(--line); }
+.gameVisual { box-shadow: 0 30px 70px -30px #000000b3, 0 0 0 1px #ffffff14; }
+.gameVisual-negative { background: #fff; color: var(--noche); box-shadow: 0 30px 70px -30px #0000008c, 0 0 0 1px var(--line); }
 .gameVisual-negative .gameIsotipo, .gameVisual-negative .gameTitle h3, .gameVisual-negative .gameTitle small, .gameVisual-negative .gameNumber { color: var(--noche); }
 .gameVisual-negative .gameBadge { background: var(--noche); color: #fff; }
 .gameVisual-negative .wordmarkDot { color: var(--coral); }
-.gameLogo img { display: block; height: clamp(64px, 7vw, 110px); width: auto; max-width: 100%; margin-left: auto; }
-.gameVisual-positive .gameLogo img { filter: brightness(0) invert(1); }
-.gameVisual-negative .gameLogo img { filter: brightness(0); }
+.gameVisual-art { background: var(--asfalto); color: #fff; }
+.gameVisual-art .gameShade { background: linear-gradient(0deg,#0A0A0Cd9 0%,#0A0A0C66 38%,transparent 65%); }
+.gameVisual-art .gameTitle { top: auto; bottom: 64px; right: 32px; left: auto; }
 .gameIsotipo { position: absolute; left: 32px; bottom: 30px; --x: clamp(40px, 5vw, 74px); color: #fff; z-index: 2; }
 .catalogHeroFlat { background: var(--noche); }
 .catalogHeroDupla { position: absolute; right: var(--pad); bottom: var(--raya-h); height: min(68%, 520px); width: auto; color: #fff; }
