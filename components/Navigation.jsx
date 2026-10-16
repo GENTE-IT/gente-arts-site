@@ -11,6 +11,7 @@ import Dialog from "./Dialog";
 import { useShop } from "./ShopProvider";
 import SocialLinks from "./SocialLinks";
 import ThemeToggle from "./ThemeToggle";
+import { email } from "../data/site";
 
 const links = [["/", "Inicio"], ["/gta-v", "GTA V"], ["/gta-vi", "GTA VI"], ["/ayuda", "Ayuda"]];
 
@@ -35,8 +36,8 @@ export default function Navigation() {
   }, { scope: header });
   return <header className="siteHeader" ref={header}>
     <Brand/>
-    <nav className="desktopNav" aria-label="Navegación principal"><JellyRadio items={navItems} value={links.some(([href]) => href === pathname) ? pathname : "/"} onChange={href => router.push(href)} ariaLabel="Secciones" chipColor="transparent" activeColor="var(--ink)" textColor="var(--nav-text)" activeTextColor="var(--ink-contrast)" size="md" gap={2} radius={18} swell={0.16} barge={4} shrink={0.04} jelly={1} bounce={0.28} stagger={20} stiffness={560}/></nav>
-    <div className="headerActions"><a className="contactLink" href="mailto:hola@gente.arts">Hablemos <Icon name="diagonal" size={15}/></a><ThemeToggle/><button className="cartTrigger" onClick={openCart} aria-label={`Abrir cesta, ${cart.length} recursos`}><Icon name="bag" size={17}/><span>{cart.length}</span></button><button className="iconButton menuTrigger" onClick={() => setMenuOpen(true)} aria-label="Abrir menú" aria-haspopup="dialog" aria-expanded={menuOpen}><Icon name="menu"/></button></div>
-    {menuOpen && <Dialog className="menuDialog" labelId="menu-title" onClose={() => setMenuOpen(false)}><div className="menuInner"><div className="menuTop"><p id="menu-title" className="kicker">Explorar</p><button className="iconButton" onClick={() => setMenuOpen(false)} aria-label="Cerrar menú"><Icon name="close"/></button></div><nav aria-label="Navegación móvil">{links.map(([href, label], index) => <StudioLink key={href} href={href} aria-current={pathname === href ? "page" : undefined} onClick={() => setMenuOpen(false)}><small>0{index + 1}</small>{label}<Icon name="diagonal"/></StudioLink>)}</nav><a className="menuContact" href="mailto:hola@gente.arts">hola@gente.arts <Icon name="diagonal"/></a><SocialLinks compact className="menuSocial"/></div></Dialog>}
+    <nav className="desktopNav" aria-label="Navegación principal"><JellyRadio items={navItems} value={links.some(([href]) => href === pathname) ? pathname : "/"} onChange={href => router.push(href)} ariaLabel="Secciones" chipColor="transparent" activeColor="var(--ink)" textColor="var(--nav-text)" activeTextColor="var(--ink-contrast)" size="md" gap={2} radius={8} swell={0.16} barge={4} shrink={0.04} jelly={1} bounce={0.28} stagger={20} stiffness={560}/></nav>
+    <div className="headerActions"><StudioLink className="button primaryButton storeButton" href="/gta-v#catalogo">Tienda</StudioLink><ThemeToggle/><button className="cartTrigger" onClick={openCart} aria-label={`Abrir cesta, ${cart.length} recursos`}><Icon name="bag" size={17}/><span>{cart.length}</span></button><button className="iconButton menuTrigger" onClick={() => setMenuOpen(true)} aria-label="Abrir menú" aria-haspopup="dialog" aria-expanded={menuOpen}><Icon name="menu"/></button></div>
+    {menuOpen && <Dialog className="menuDialog" labelId="menu-title" onClose={() => setMenuOpen(false)}><div className="menuInner"><div className="menuTop"><p id="menu-title" className="kicker">Explorar</p><button className="iconButton" onClick={() => setMenuOpen(false)} aria-label="Cerrar menú"><Icon name="close"/></button></div><nav aria-label="Navegación móvil">{links.map(([href, label], index) => <StudioLink key={href} href={href} aria-current={pathname === href ? "page" : undefined} onClick={() => setMenuOpen(false)}><small>0{index + 1}</small>{label}<Icon name="diagonal"/></StudioLink>)}</nav><a className="menuContact" href={`mailto:${email}`}>hola@gente.arts <Icon name="diagonal"/></a><SocialLinks compact className="menuSocial"/></div></Dialog>}
   </header>;
 }

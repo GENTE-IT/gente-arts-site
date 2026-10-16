@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP, MOTION_OK } from "./motion/gsap";
 
-const text = "No vendemos ruido. Creamos piezas digitales para mundos abiertos con identidad, detalle y algo que decir.";
+const text = "GENTE.ARTS es el estudio que hace que un servidor parezca hecho por un equipo grande, aunque lo lleve una sola persona.";
 
 /*
  * Pinned statement. The section stays fixed while the user scrolls ~1.6
@@ -34,9 +34,9 @@ export default function Manifesto() {
 
   return <section className="manifesto" ref={root} aria-labelledby="store-manifesto">
     <div className="manifestoReader">
-      <aside className="manifestoSide" aria-hidden="true"><span>GENTE.ARTS<br/>Manifiesto 01</span><div className="manifestoRail"><i/></div><span>El detalle<br/>importa</span></aside>
+      <aside className="manifestoSide" aria-hidden="true"><span>GENTE.ARTS<br/>Posicionamiento</span><div className="manifestoRail"><i/></div><span>Hecho por gente</span></aside>
       <h2 className="manifestoText" id="store-manifesto">{text}</h2>
-      <aside className="manifestoSide manifestoMeasure" aria-hidden="true"><span>Sigue<br/>explorando</span><div className="manifestoCount"><span className="manifestoPercent">00</span><small>% leído</small></div><span className="manifestoAccent">Diseño digital,<br/>sin ruido</span></aside>
+      <aside className="manifestoSide manifestoMeasure" aria-hidden="true"><span>Sigue<br/>explorando</span><div className="manifestoCount"><span className="manifestoPercent">00</span><small>% leído</small></div><span className="manifestoAccent">Para tu<br/>servidor</span></aside>
     </div>
   </section>;
 }

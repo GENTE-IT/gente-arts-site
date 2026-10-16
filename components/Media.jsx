@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { blur } from "../data/blur";
+import Logo from "./brand/Logo";
 
 /*
  * Image wrapper used across the store. `fill` images need a positioned parent,
@@ -20,6 +21,6 @@ function MediaAsset({ src, alt, className, eager, sizes, fit, parallax, scale, p
   const layerProps = parallax ? { "data-parallax": String(parallax) } : {};
   return <div className={`media ${parallax ? "mediaParallax" : ""} ${loaded ? "mediaLoaded" : ""} ${failed ? "mediaFailed" : ""} ${className}`} {...layerProps}>
     {!failed && <Image src={src} alt={alt} fill sizes={sizes} priority={eager} loading={eager ? "eager" : "lazy"} placeholder={placeholder ? "blur" : "empty"} blurDataURL={placeholder} style={{ objectFit: fit, objectPosition: position }} data-scale={scale ? "" : undefined} onLoad={() => setLoaded(true)} onError={() => setFailed(true)}/>}
-    {failed && <span className="mediaFallback" role="img" aria-label={alt}><span>GENTE.<i>ARTS</i></span><small>Vista previa no disponible</small></span>}
+    {failed && <span className="mediaFallback" role="img" aria-label={alt}><Logo variant="isotipo" x={18}/><small>Vista previa no disponible</small></span>}
   </div>;
 }

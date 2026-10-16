@@ -11,7 +11,7 @@ const questions = [
   ["¿Qué necesito para usar un recurso?", "Los requisitos dependen de cada producto y del entorno de tu servidor. Antes de una compra, consulta la compatibilidad, las dependencias y los detalles técnicos con el estudio."],
   ["¿Cuándo llega GTA VI?", "Todavía no hemos anunciado una fecha. La página de GTA VI recogerá la colección cuando esté disponible."],
   ["¿Dónde se guarda mi cesta?", "Tu selección se guarda en este navegador para que puedas retomarla después. No se crea una cuenta ni se envían esos datos al estudio. Si borras los datos del navegador, se eliminará la selección."],
-  ["¿Puedo proponer algo a medida?", "Sí. Escríbenos a hola@gente.arts con tu idea, el entorno en el que quieres usarla y las referencias que tengas. Podremos conversar sobre el alcance y la disponibilidad."],
+  ["¿Puedo proponer algo a medida?", "Sí. Escríbenos a mateo.dev@gente.ws con tu idea, el entorno en el que quieres usarla y las referencias que tengas. Podremos conversar sobre el alcance y la disponibilidad."],
 ];
 
 export default function Help() {
@@ -19,7 +19,7 @@ export default function Help() {
     <StudioLink className="textLink" href="/" data-reveal="fade"><Icon name="back" size={16}/> Volver al estudio</StudioLink>
     <div className="helpIntro"><p className="kicker" data-reveal="fade">Estamos al otro lado</p><h1 data-split>Las cosas, claras.</h1><p data-reveal>Unas respuestas para que puedas seguir creando.</p></div>
     <section className="helpLayout"><div data-reveal><p className="kicker">01 · Preguntas frecuentes</p><h2>Antes de empezar.</h2></div><div className="faqList" data-reveal-group>{questions.map(([question, answer]) => <details key={question}><summary>{question}<Icon name="plus" size={18}/></summary><p>{answer}</p></details>)}</div></section>
-    <section className="helpLayout licenseSection" id="licencias"><div data-reveal><p className="kicker">02 · Uso y licencias</p><h2>Cada recurso,<br/>sus condiciones.</h2></div><div data-reveal-group><p>La licencia, el alcance de uso y las condiciones de cada producto se comunicarán antes de habilitar su compra. La información de esta colección es una vista previa y no constituye una licencia de uso.</p><p>Si tienes un caso concreto —varios servidores, modificaciones o un proyecto a medida—, consúltalo con el estudio.</p><a className="button darkButton" href="mailto:hola@gente.arts?subject=Consulta%20sobre%20licencias">Consultar una licencia <Icon name="diagonal"/></a></div></section>
+    <section className="helpLayout licenseSection" id="licencias"><div data-reveal><p className="kicker">02 · Uso y licencias</p><h2>Cada recurso,<br/>sus condiciones.</h2></div><div data-reveal-group><p>La licencia, el alcance de uso y las condiciones de cada producto se comunicarán antes de habilitar su compra. La información de esta colección es una vista previa y no constituye una licencia de uso.</p><p>Si tienes un caso concreto —varios servidores, modificaciones o un proyecto a medida—, consúltalo con el estudio.</p><a className="button darkButton" href="mailto:mateo.dev@gente.ws?subject=Consulta%20sobre%20licencias">Consultar una licencia <Icon name="diagonal"/></a></div></section>
     <ScrollMotion/>
   </main>;
 }

@@ -5,6 +5,7 @@ import { gsap, useGSAP, MOTION_OK, DESKTOP } from "./motion/gsap";
 import StudioLink from "./StudioLink";
 import AccessCard from "./AccessCard";
 import Icon from "./Icon";
+import { fullName } from "../data/products";
 
 /*
  * Horizontal showcase of access cards. On desktop the section pins and
@@ -35,7 +36,7 @@ export default function FeaturedRail({ products }) {
     <div className="railViewport">
       <div className="railTrack" data-batch>
         {products.map(product => <article className="railItem" key={product.id}>
-          <StudioLink className="railCardLink" href={`/gta-v?p=${product.id}#catalogo`} aria-label={`Ver ${product.name}`}><AccessCard product={product} sizes="(max-width: 900px) 80vw, 38vw"/></StudioLink>
+          <StudioLink className="railCardLink" href={`/gta-v?p=${product.id}#catalogo`} aria-label={`Ver ${fullName(product)}`}><AccessCard product={product} sizes="(max-width: 900px) 80vw, 38vw"/></StudioLink>
           <p>{product.description}</p>
         </article>)}
         <StudioLink className="railMore" href="/gta-v#catalogo"><span className="kicker">Catálogo completo</span><h3>Ver las siete tarjetas.</h3><span className="circleArrow"><Icon name="diagonal"/></span></StudioLink>

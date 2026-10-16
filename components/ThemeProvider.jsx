@@ -13,9 +13,9 @@ export const useTheme = () => useContext(ThemeContext);
 export const THEME_KEY = "gente-theme";
 
 export default function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
   useEffect(() => {
-    setTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+    setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
   }, []);
   const toggle = () => setTheme(current => {
     const next = current === "dark" ? "light" : "dark";
@@ -26,5 +26,5 @@ export default function ThemeProvider({ children }) {
   return <ThemeContext.Provider value={{ theme, toggle }}>{children}</ThemeContext.Provider>;
 }
 
-// Runs before hydration (see app/layout.js): stored choice, else the system preference.
-export const themeBootScript = `(function(){try{var t=localStorage.getItem("${THEME_KEY}");if(!t){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}})();`;
+// Runs before hydration (see app/layout.js): stored choice, else dark (the manual's default).
+export const themeBootScript = `(function(){try{var t=localStorage.getItem("${THEME_KEY}");if(t!=="light"){t="dark"}document.documentElement.dataset.theme=t}catch(e){}})();`;

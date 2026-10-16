@@ -4,42 +4,42 @@ import { useRef } from "react";
 import { gsap, useGSAP, MOTION_OK } from "./motion/gsap";
 import FoldText from "./reactbits/FoldText";
 import Lightfall from "./reactbits/Lightfall";
-import Figures from "./brand/Figures";
+import Dupla from "./brand/Dupla";
+import Raya from "./brand/Raya";
 import Icon from "./Icon";
 import StudioLink from "./StudioLink";
 import { useTheme } from "./ThemeProvider";
 
 /*
- * Opening scene on white: falling light (React Bits' Lightfall) behind the
- * wordmark set as type and unfolded letter by letter (FoldText, with hover
- * refold). The figures fold open the same way with GSAP and refold near the
- * pointer like the letters do. Two calls to action underneath.
+ * Portada (manual, ch. 15): headline in Unbounded 800, the dupla large on the
+ * right standing on a raya that crosses the whole screen. The headline unfolds
+ * word by word (FoldText) and the dupla folds open the same way, refolding
+ * near the pointer. Behind it, a faint fall of white light (Lightfall).
  */
 export default function BrandHero() {
   const root = useRef(null);
   const { theme } = useTheme();
-  const dark = theme === "dark";
+  const dark = theme !== "light";
   useGSAP((context, contextSafe) => {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const el = root.current;
-      const figures = el.querySelector(".heroFigures");
+      const dupla = el.querySelector(".heroDupla");
       const intro = gsap.timeline({ defaults: { ease: "power3.out" } })
-        .fromTo(figures, { rotationX: -92, autoAlpha: 0, transformOrigin: "50% 0%" }, { rotationX: 0, autoAlpha: 1, duration: 1.1, ease: "power3.out" }, 0.1)
-        .from(".heroMeta > *", { y: -12, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 0.5)
-        .from(".heroActions > *", { y: 26, autoAlpha: 0, duration: 1, stagger: 0.1 }, 0.9);
+        .fromTo(dupla, { rotationX: -92, autoAlpha: 0, transformOrigin: "50% 0%" }, { rotationX: 0, autoAlpha: 1, duration: 1.1 }, 0.1)
+        .from(".heroCopy > :not(.heroTitle)", { y: 18, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 0.5)
+        .from(".heroRaya", { scaleX: 0, transformOrigin: "0% 50%", duration: 1.2, ease: "power3.inOut" }, 0.2);
       gsap.timeline({ scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } })
-        .to(".heroStage", { yPercent: 22, autoAlpha: 0.2, ease: "none" }, 0)
-        .to(".heroLight", { autoAlpha: 0.35, ease: "none" }, 0)
-        .to(".heroActions, .heroMeta", { autoAlpha: 0, y: -30, ease: "none" }, 0);
+        .to(".heroStage", { yPercent: 14, autoAlpha: 0.3, ease: "none" }, 0)
+        .to(".heroLight", { autoAlpha: 0.2, ease: "none" }, 0)
+        .to(".heroCopy", { autoAlpha: 0, y: -30, ease: "none" }, 0);
 
-      // Hover refold, same rule as FoldText: within 160px the panel folds up to 40deg
-      // (smoothstep falloff), snapping toward the pointer and easing back once it passes.
+      // Hover refold, same rule as FoldText: within 160px the panel folds up to 40deg.
       const RADIUS = 160, ANGLE = 40;
-      const fold = gsap.quickTo(figures, "rotationX", { duration: 0.45, ease: "power2.out" });
+      const fold = gsap.quickTo(dupla, "rotationX", { duration: 0.45, ease: "power2.out" });
       const move = contextSafe(event => {
         if (intro.isActive()) return;
-        const r = figures.getBoundingClientRect();
+        const r = dupla.getBoundingClientRect();
         const dx = Math.max(r.left - event.clientX, 0, event.clientX - r.right);
         const dy = Math.max(r.top - event.clientY, 0, event.clientY - r.bottom);
         const d = Math.hypot(dx, dy) / RADIUS;
@@ -54,16 +54,14 @@ export default function BrandHero() {
   }, { scope: root });
 
   return <section className="brandHero" id="inicio" ref={root}>
-    <div className="heroLight" aria-hidden="true"><Lightfall lightMode={!dark} colors={dark ? ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#9cccff", "#9cccff"] : ["#141614", "#3f8fb0", "#e2693f", "#f0b43c"]} backgroundColor="#3f8fb0" speed={0.26} streakCount={3} streakWidth={0.9} streakLength={1.1} twinkle={0.3} backgroundGlow={0} headGlow={dark ? 0.6 : 0.5} bloom={0.4} depth={0.55} fade={0.3} opacity={0.95} mouseInteraction holdToWarp intro/></div>
-    <h1 className="srOnly">GENTE.ARTS — Tu mundo. Tu manera.</h1>
-    <div className="heroMeta"><span><i className="kickerDot"/>Estudio creativo digital</span><span>Vol. 01 · GTA V / GTA VI</span><span>Tarjetas de acceso a recursos</span></div>
-    <div className="heroStage">
-      <div className="heroFigureStage"><Figures className="heroFigures" height={340}/></div>
-      <div className="heroMark" aria-hidden="true">
-        <FoldText className="heroGente" text="GENTE." foldStyle="paper" splitBy="char" hinge="top" trigger="mount" foldAngle={92} duration={0.7} stagger={0.06} staggerFrom="start" ease="power3.out" hoverRefold refoldRadius={160} refoldAngle={40} perspective={900} creaseShading={0.5} fontSize="var(--mark-h)" fontWeight={900}/>
-        <FoldText className="heroArts" text="ARTS" foldStyle="paper" splitBy="char" hinge="top" trigger="mount" foldAngle={92} duration={0.7} stagger={0.07} staggerFrom="start" ease="power3.out" hoverRefold refoldRadius={160} refoldAngle={40} perspective={900} creaseShading={0.35} fontSize="calc(var(--mark-h) * .82)" fontWeight={900}/>
-      </div>
+    <div className="heroLight" aria-hidden="true"><Lightfall lightMode={!dark} colors={dark ? ["#ffffff", "#ffffff", "#ffffff", "#8C9099"] : ["#0A0A0C", "#0A0A0C", "#8C9099"]} backgroundColor="#0A0A0C" speed={0.22} streakCount={2} streakWidth={0.8} streakLength={1} twinkle={0.2} backgroundGlow={0} headGlow={0.4} bloom={0.25} depth={0.5} fade={0.3} opacity={dark ? 0.55 : 0.4} mouseInteraction intro/></div>
+    <div className="heroCopy">
+      <p className="kicker" data-reveal="fade">Estudio · GTA V (FiveM) · GTA VI</p>
+      <h1 className="heroTitle"><span className="srOnly">Hecho por gente, para tu servidor.</span><FoldText text="Hecho por gente, para tu servidor." foldStyle="paper" splitBy="word" hinge="top" trigger="mount" foldAngle={92} duration={0.7} stagger={0.08} staggerFrom="start" ease="power3.out" hoverRefold refoldRadius={160} refoldAngle={40} perspective={900} creaseShading={0.4} fontSize="var(--text-display)" fontWeight={800} aria-hidden="true"/></h1>
+      <p className="heroLead">Scripts, mapeados y ropa para servidores de rol. Funcionan a la primera, están documentados y se actualizan cuando cambian los frameworks.</p>
+      <div className="heroActions"><StudioLink className="button primaryButton" href="/gta-v#catalogo">Ver la tienda <Icon name="arrow"/></StudioLink><a className="button outlineButton" href="#como-funciona">Cómo funciona <Icon name="down"/></a></div>
     </div>
-    <div className="heroActions"><StudioLink className="button darkButton" href="/gta-v#catalogo">Ver la colección <Icon name="arrow"/></StudioLink><a className="button outlineButton" href="#como-funciona">Cómo funciona <Icon name="down"/></a></div>
+    <div className="heroStage"><div className="heroDuplaStage"><Dupla className="heroDupla"/></div></div>
+    <Raya className="heroRaya"/>
   </section>;
 }

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from "./motion/gsap";
 
-const items = ["Mapeados", "Scripts", "Ropa", "Sistemas", "FiveM", "GTA V", "GTA VI próximamente"];
+const items = ["Scripts", "Mapeados", "Ropa", "Packs", "FiveM", "ESX / QBCore", "GTA V", "GTA VI, en preparación"];
 
 /*
  * Infinite ticker. The track is duplicated and translated -50% on loop; scroll
