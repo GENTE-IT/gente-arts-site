@@ -179,12 +179,12 @@ main { min-height: 50vh; }
 .gameVisual { aspect-ratio: 1.15; position: relative; border-radius: var(--radius); overflow: hidden; background: #16171B; color: #fff; isolation: isolate; }
 .gameVisual img { transition: transform 1.2s var(--ease-out); }
 .gameCard:hover .gameVisual img { transform: scale(1.04); }
-.gameShade { position: absolute; inset: 0; background: linear-gradient(0deg,#0A0A0Cf0 0%,#0A0A0C8c 40%,transparent 70%); pointer-events: none; }
+.gameShade { position: absolute; inset: 0; background: linear-gradient(0deg,#0A0A0Cf0 0%,#0A0A0C99 45%,#0A0A0C33 100%); pointer-events: none; }
 .gameBadge { position: absolute; display: flex; gap: 8px; align-items: center; top: 22px; left: 22px; padding: 8px 12px; border-radius: 6px; background: #fff; color: #0A0A0C; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
 .gameBadge i { width: 7px; height: 7px; border-radius: 0; background: var(--ambar); }
-.gameTitle { position: absolute; left: 32px; bottom: 30px; right: 90px; }
-.gameTitle small { font-size: 13px; font-weight: 600; color: #c9ccd2; }
-.gameTitle h3 { margin-top: 12px; font-size: var(--text-display); letter-spacing: -.03em; line-height: 1; font-weight: 800; }
+.gameTitle { position: absolute; right: 32px; top: 22%; left: 40%; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.gameTitle small { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #c9ccd2; }
+.gameTitle h3 { font-size: clamp(48px, 5.6vw, 84px); letter-spacing: -.03em; line-height: 1; font-weight: 800; color: #fff; }
 .gameNumber { position: absolute; right: 30px; bottom: 32px; font: 500 12px var(--font-mono); color: #c9ccd2; }
 .gameFoot { display: flex; justify-content: space-between; align-items: center; padding: 20px 2px 0; font-size: 15px; font-weight: 600; }
 .gameFoot .circleArrow { width: 38px; height: 38px; border-color: #dcdbd6; }
@@ -539,8 +539,8 @@ dialog::backdrop { background: #0d120fb3; backdrop-filter: blur(8px); animation:
 .loadingBar { width: min(420px, 100%); height: 6px; background: var(--paper-2); overflow: hidden; margin: 6px 0; }
 .loadingBar .raya { height: 100%; transform-origin: left; animation: fillBar 1.6s cubic-bezier(.4,0,.2,1) infinite; }
 @keyframes fillBar { 0% { transform: scaleX(0); opacity: 1; } 75% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
-.gameVisualFlat { display: grid; place-items: center; background: var(--asfalto); }
-.gameDupla { height: 58%; width: auto; color: #fff; opacity: .18; }
+.gameVisualFlat { background: var(--asfalto); }
+.gameIsotipo { position: absolute; left: 32px; bottom: 30px; --x: clamp(40px, 5vw, 74px); color: #fff; z-index: 2; }
 .catalogHeroFlat { background: var(--noche); }
 .catalogHeroDupla { position: absolute; right: var(--pad); bottom: var(--raya-h); height: min(68%, 520px); width: auto; color: #fff; }
 .catalogHero .heroRaya { z-index: 4; }
@@ -578,7 +578,7 @@ dialog::backdrop { background: #0d120fb3; backdrop-filter: blur(8px); animation:
 
   .heroActions .button { flex: 1; }
   .sectionHeading { align-items: flex-start; flex-direction: column; gap: 20px; }.sectionHeading>p br { display: none; }
-  .gameCategories { gap: 18px; }.gameVisual { aspect-ratio: .9; }.gameTitle { left: 22px; bottom: 25px; }.gameTitle h3 { font-size: 56px; }.gameNumber { display: none; }
+  .gameCategories { gap: 18px; }.gameVisual { aspect-ratio: .9; }.gameTitle h3 { font-size: 56px; }.gameNumber { display: none; }
   .manifestoReader { padding: 100px var(--pad) 60px; }
   .studioSection { grid-template-columns: 1fr; gap: 50px; }.studioPrinciples p { max-width: none; }
   .footerTop { flex-direction: column; gap: 45px; }.footerLinks { justify-content: space-between; }.footerBottom { flex-wrap: wrap; gap: 18px; }.footerBottom p { order: 3; max-width: 100%; }.footerBottom a { margin-left: auto; }
@@ -629,5 +629,8 @@ dialog::backdrop { background: #0d120fb3; backdrop-filter: blur(8px); animation:
   .footerBrand .logo-principal { --x: 18px; }
   .footerBrand .logo-principal { --x: 20px; }
   .catalogHeroDupla { height: 46%; }
+  .gameIsotipo { --x: 40px; left: 22px; bottom: 22px; }
+  .gameTitle { right: 22px; left: 35%; }
+  .gameTitle h3 { font-size: 44px; }
   .catalogHeroCopy h1 { font-size: 48px; }
 }
