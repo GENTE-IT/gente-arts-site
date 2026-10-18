@@ -1,6 +1,9 @@
 'use client';
 
-// PulseHeart from React Bits (https://reactbits.dev), JavaScript + CSS variant. Unchanged.
+// PulseHeart from React Bits (https://reactbits.dev), JavaScript + CSS variant.
+// Adapted from the original to satisfy the react-hooks lint rules: the latest-value refs
+// (logical, cfg) are updated in a layout effect, and `total` follows the `count` prop by
+// adjusting state during render instead of in an effect. Behaviour is unchanged.
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FavouriteIcon, StarIcon, ThumbsUpIcon } from '@hugeicons/core-free-icons';
@@ -45,6 +48,11 @@ export default function PulseHeart({
   const controlled = likedProp !== undefined;
   const [inner, setInner] = useState(defaultLiked);
   const [total, setTotal] = useState(count);
+  const [prevCount, setPrevCount] = useState(count);
+  if (prevCount !== count) {
+    setPrevCount(count);
+    setTotal(count);
+  }
   const liked = controlled ? likedProp : inner;
   const [shown, setShown] = useState({ liked, count });
   const [roll, setRoll] = useState(null);
@@ -59,13 +67,12 @@ export default function PulseHeart({
   const viaPointer = useRef(false);
   const shownRef = useRef(shown);
   const logical = useRef({ liked, count: total });
-  logical.current = { liked, count: total };
   const cfg = useRef({ duration, dotSize, overshoot, beat, rollDuration });
-  cfg.current = { duration, dotSize, overshoot, beat, rollDuration };
 
-  useEffect(() => {
-    setTotal(count);
-  }, [count]);
+  useLayoutEffect(() => {
+    logical.current = { liked, count: total };
+    cfg.current = { duration, dotSize, overshoot, beat, rollDuration };
+  });
 
   useEffect(() => {
     if (raf.current) return;

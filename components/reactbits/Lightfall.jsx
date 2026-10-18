@@ -2,8 +2,9 @@
 
 // Lightfall from React Bits (https://reactbits.dev), JavaScript + CSS variant.
 // One change: the cleanup frees GPU objects but keeps the context (see the end of the effect).
+// Second change: settingsRef is updated in a layout effect instead of during render (react-hooks/refs).
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import './Lightfall.css';
 
@@ -341,34 +342,38 @@ const Lightfall = ({
   const wakeRef = useRef(null);
   const settingsRef = useRef(null);
   const [generation, setGeneration] = useState(0);
-  settingsRef.current = {
-    colors: (Array.isArray(colors) && colors.length ? colors : ['#ffffff']).slice(0, MAX_COLORS).map(String),
-    backgroundColor: String(backgroundColor),
-    speed,
-    streakCount: Math.round(clamp(streakCount, 1, 16)),
-    streakWidth: Math.max(0.05, streakWidth),
-    streakLength: Math.max(0.05, streakLength),
-    glow: Math.max(0, glow),
-    density,
-    twinkle: clamp(twinkle, 0, 1),
-    zoom: Math.max(0.1, zoom),
-    backgroundGlow: Math.max(0, backgroundGlow),
-    headGlow: clamp(headGlow, 0, 1),
-    depth: Math.max(0, depth),
-    bloom: Math.max(0, bloom),
-    opacity: clamp(opacity, 0, 1),
-    mouseInteraction,
-    mouseStrength: Math.max(0, mouseStrength),
-    mouseRadius: Math.max(0.01, mouseRadius),
-    mouseDampening: Math.max(0, mouseDampening),
-    lens: clamp(lens, 0, 1),
-    holdToWarp,
-    intro,
-    fade: clamp(fade, 0, 1),
-    lightMode,
-    paused,
-    dpr
-  };
+  // Latest props for the long-lived WebGL effect below. Updated in a layout effect (not during
+  // render) and declared before that effect so it is populated before the effect first reads it.
+  useLayoutEffect(() => {
+    settingsRef.current = {
+      colors: (Array.isArray(colors) && colors.length ? colors : ['#ffffff']).slice(0, MAX_COLORS).map(String),
+      backgroundColor: String(backgroundColor),
+      speed,
+      streakCount: Math.round(clamp(streakCount, 1, 16)),
+      streakWidth: Math.max(0.05, streakWidth),
+      streakLength: Math.max(0.05, streakLength),
+      glow: Math.max(0, glow),
+      density,
+      twinkle: clamp(twinkle, 0, 1),
+      zoom: Math.max(0.1, zoom),
+      backgroundGlow: Math.max(0, backgroundGlow),
+      headGlow: clamp(headGlow, 0, 1),
+      depth: Math.max(0, depth),
+      bloom: Math.max(0, bloom),
+      opacity: clamp(opacity, 0, 1),
+      mouseInteraction,
+      mouseStrength: Math.max(0, mouseStrength),
+      mouseRadius: Math.max(0.01, mouseRadius),
+      mouseDampening: Math.max(0, mouseDampening),
+      lens: clamp(lens, 0, 1),
+      holdToWarp,
+      intro,
+      fade: clamp(fade, 0, 1),
+      lightMode,
+      paused,
+      dpr
+    };
+  });
 
   useEffect(() => {
     const container = containerRef.current;

@@ -22,6 +22,9 @@ export default function ShopProvider({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Cart and likes are restored from the browser's storage after hydration, so the server and
+    // client first renders match and the persisted data is not overwritten (see `ready`).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     try { setCart(validCart(JSON.parse(localStorage.getItem("gente-cart") || "[]"))); } catch {}
     try { setLiked(validCart(JSON.parse(localStorage.getItem("gente-likes") || "[]"))); } catch {}
     setReady(true);
@@ -35,7 +38,14 @@ export default function ShopProvider({ children }) {
   }, []);
   useEffect(() => { if (ready) { try { localStorage.setItem("gente-cart", JSON.stringify(cart)); } catch {} } }, [cart, ready]);
   useEffect(() => { if (ready) { try { localStorage.setItem("gente-likes", JSON.stringify(liked)); } catch {} } }, [liked, ready]);
-  useEffect(() => { setOpen(false); setNotice(""); }, [pathname]);
+  // Close the cart and clear the notice whenever the route changes. Adjusting state during render
+  // (instead of in an effect) avoids a render with the cart still open on the new page.
+  const [shopPath, setShopPath] = useState(pathname);
+  if (shopPath !== pathname) {
+    setShopPath(pathname);
+    setOpen(false);
+    setNotice("");
+  }
   useEffect(() => { if (!notice) return; const timer = setTimeout(() => setNotice(""), 3500); return () => clearTimeout(timer); }, [notice]);
 
   const selected = cart.map(id => products.find(product => product.id === id)).filter(Boolean);

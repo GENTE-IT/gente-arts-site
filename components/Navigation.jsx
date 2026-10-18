@@ -21,7 +21,13 @@ export default function Navigation() {
   const header = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const { cart, openCart } = useShop();
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  // Close the menu whenever the route changes. Adjusting state during render (instead of in an
+  // effect) avoids a render with the menu still open on the new page. Keep it out of an effect.
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
+    setMenuOpen(false);
+  }
   // The jelly chips are buttons, so prefetch what Link would have prefetched.
   useEffect(() => { links.forEach(([href]) => router.prefetch(href)); }, [router]);
   const navItems = links.map(([href, label]) => ({ value: href, label: href === "/gta-vi" ? <>{label}<span className="navDot"/></> : label }));
