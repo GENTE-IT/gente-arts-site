@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 
 export default function Dialog({ children, onClose, labelId, className = "" }) {
   const ref = useRef(null);
-  const closeRef = useRef(onClose);
-  closeRef.current = onClose;
 
   useEffect(() => {
     const dialog = ref.current;
@@ -20,7 +18,7 @@ export default function Dialog({ children, onClose, labelId, className = "" }) {
     };
   }, []);
 
-  return <dialog ref={ref} className={className} aria-labelledby={labelId} onCancel={event => { event.preventDefault(); closeRef.current(); }} onClick={event => { if (event.target === event.currentTarget) closeRef.current(); }}>
+  return <dialog ref={ref} className={className} aria-labelledby={labelId} onCancel={event => { event.preventDefault(); onClose(); }} onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
     {children}
   </dialog>;
 }

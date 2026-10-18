@@ -1,9 +1,12 @@
 'use client';
 
-// JellyRadio from React Bits (https://reactbits.dev), JavaScript + CSS variant. Unchanged.
+// JellyRadio from React Bits (https://reactbits.dev), JavaScript + CSS variant.
+// Adapted from the original to satisfy the react-hooks lint rules: each Chip owns its motion values
+// (useMotionValue) and registers them with the parent from a layout effect, and `cfg` is updated in a
+// layout effect instead of during render. Behaviour is unchanged.
 
-import { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { animate, motion, motionValue, useReducedMotion, useTransform } from 'motion/react';
+import { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
 
 import './JellyRadio.css';
 
@@ -12,8 +15,24 @@ const SIZES = { sm: [28, 12, 12], md: [36, 13, 16], lg: [44, 14, 20] };
 
 const spring = (k, m, bounce) => ({ type: 'spring', stiffness: k, damping: 2 * Math.sqrt(k * m) * (1 - bounce), mass: m });
 
-const Chip = forwardRef(function Chip({ mv, children, ...rest }, ref) {
-  const transform = useTransform(() => `translateX(${mv.x.get()}px) scale(${mv.sx.get()}, ${mv.sy.get()})`);
+const Chip = forwardRef(function Chip({ index, onMv, children, ...rest }, ref) {
+  const x = useMotionValue(0);
+  const sx = useMotionValue(1);
+  const sy = useMotionValue(1);
+  const transform = useTransform(() => `translateX(${x.get()}px) scale(${sx.get()}, ${sy.get()})`);
+  useLayoutEffect(() => {
+    onMv(index, { x, sx, sy });
+    return () => onMv(index, null);
+  }, [index, onMv, x, sx, sy]);
+  // Destroy only on unmount: a parent re-render must not stop animations that are still running.
+  useEffect(
+    () => () => {
+      x.destroy();
+      sx.destroy();
+      sy.destroy();
+    },
+    [x, sx, sy]
+  );
   return (
     <motion.button ref={ref} style={{ transform }} {...rest}>
       {children}
@@ -52,21 +71,15 @@ export default function JellyRadio({
   const groupRef = useRef(null);
   const chipRefs = useRef([]);
   const widths = useRef([]);
-  const mvs = useRef([]);
+  const mvs = useRef({});
+  const setMv = useCallback((i, mv) => {
+    if (mv) mvs.current[i] = mv;
+    else delete mvs.current[i];
+  }, []);
   const applied = useRef(at);
   const cfg = useRef({});
-  cfg.current = { swell, barge, shrink, jelly, bounce, stagger, stiffness, reduce, count: list.length };
   const [h, font, px] = SIZES[size] ?? SIZES.md;
   const itemsKey = list.map(it => it.value).join('|');
-
-  const mvFor = i => {
-    let mv = mvs.current[i];
-    if (!mv) {
-      mv = { x: motionValue(0), sx: motionValue(1), sy: motionValue(1) };
-      mvs.current[i] = mv;
-    }
-    return mv;
-  };
 
   const apply = (sel, instant) => {
     const C = cfg.current;
@@ -74,7 +87,8 @@ export default function JellyRadio({
     const rtl = group ? getComputedStyle(group).direction === 'rtl' : false;
     const push = ((widths.current[sel] ?? 0) * C.swell) / 2 + C.barge;
     for (let i = 0; i < C.count; i++) {
-      const mv = mvFor(i);
+      const mv = mvs.current[i];
+      if (!mv) continue;
       const on = i === sel;
       const far = Math.abs(i - sel);
       const dir = Math.sign(i - sel) * (rtl ? -1 : 1);
@@ -106,6 +120,9 @@ export default function JellyRadio({
     group.style.setProperty('--jr-pad-y', `${Math.ceil((chipH * swell) / 2) + 2}px`);
   };
   useLayoutEffect(() => {
+    cfg.current = { swell, barge, shrink, jelly, bounce, stagger, stiffness, reduce, count: list.length };
+  });
+  useLayoutEffect(() => {
     const settle = () => {
       measure();
       apply(applied.current, true);
@@ -121,18 +138,7 @@ export default function JellyRadio({
     if (applied.current === at) return;
     applied.current = at;
     apply(at, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [at]);
-  useEffect(
-    () => () =>
-      mvs.current.forEach(mv => {
-        mv.x.destroy();
-        mv.sx.destroy();
-        mv.sy.destroy();
-      }),
-    []
-  );
-
   const commit = (i, instant) => {
     if (disabled || i === at || !list[i] || list[i].disabled) return;
     applied.current = i;
@@ -184,7 +190,8 @@ export default function JellyRadio({
       {list.map((it, i) => (
         <Chip
           key={it.value}
-          mv={mvFor(i)}
+          index={i}
+          onMv={setMv}
           ref={el => {
             chipRefs.current[i] = el;
           }}
