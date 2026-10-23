@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { gsap, useGSAP, MOTION_OK } from "./motion/gsap";
 import FoldText from "./reactbits/FoldText";
 import Lightfall from "./reactbits/Lightfall";
-import Dupla from "./brand/Dupla";
 import Raya from "./brand/Raya";
 import Icon from "./Icon";
 import StudioLink from "./StudioLink";
@@ -61,7 +60,7 @@ export default function BrandHero() {
       <p className="heroLead">Scripts, mapeados y ropa para servidores de rol. Funcionan a la primera, están documentados y se actualizan cuando cambian los frameworks.</p>
       <div className="heroActions"><StudioLink className="button primaryButton" href="/gta-v#catalogo">Ver la tienda <Icon name="arrow"/></StudioLink><a className="button outlineButton" href="#como-funciona">Cómo funciona <Icon name="down"/></a></div>
     </div>
-    <div className="heroStage"><div className="heroDuplaStage"><Dupla className="heroDupla"/></div></div>
+    <div className="heroStage"><div className="heroDuplaStage"><img src="/brand/isotipo.png" alt="" className="heroDupla" draggable={false}/></div></div>
     <Raya className="heroRaya"/>
   </section>;
 }

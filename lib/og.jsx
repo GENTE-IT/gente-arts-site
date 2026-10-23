@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { DUPLA_VIEWBOX, DUPLA_PATH } from "../components/brand/dupla";
 
 /*
  * Link-preview images (Open Graph) drawn with next/og after the brand manual:
@@ -13,19 +12,21 @@ const MARGIN = 72;
 export const C = { noche: "#0A0A0C", asfalto: "#16171B", hormigon: "#8C9099", papel: "#F5F4F0", coral: "#E04A3A", naranja: "#EE7B2F", ambar: "#F3B43C", pacifico: "#2D6CB3" };
 const BANDS = [C.coral, C.naranja, C.ambar, C.pacifico];
 
-const [, , duplaW, duplaH] = DUPLA_VIEWBOX.split(" ").map(Number);
-const duplaUri = color => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${DUPLA_VIEWBOX}"><path d="${DUPLA_PATH}" fill="${color}" fill-rule="evenodd"/></svg>`)}`;
+// Logo oficial como imagen (public/brand), incrustado en base64 porque next/og no resuelve rutas relativas.
+const brandUri = file => `data:image/png;base64,${readFileSync(join(process.cwd(), "public", "brand", file)).toString("base64")}`;
+const ISOTIPO = { w: 587, h: 767 };
+const HORIZONTAL = { w: 1108, h: 389 };
 
-export function Dupla({ height = 320, color = "#fff", style }) {
-  return <img src={duplaUri(color)} width={(height * duplaW) / duplaH} height={height} style={style} alt=""/>;
+export function Dupla({ height = 320, style }) {
+  return <img src={brandUri("isotipo.png")} width={Math.round((height * ISOTIPO.w) / ISOTIPO.h)} height={height} style={style} alt=""/>;
 }
 export function Raya({ height = 12, style }) {
   return <div style={{ display: "flex", width: "100%", height, ...style }}>{BANDS.map(band => <div key={band} style={{ flex: 1, background: band }}/>)}</div>;
 }
-// Wordmark: GENTE in 800, the dot in 800 and Ámbar, ARTS in 400, tracking −3%.
-export function Wordmark({ size = 44, color = "#fff", dot = C.ambar }) {
-  const base = { fontFamily: "Unbounded", fontSize: size, letterSpacing: "-0.03em", lineHeight: 1, color };
-  return <div style={{ display: "flex", ...base }}><span style={{ fontWeight: 800 }}>GENTE</span><span style={{ fontWeight: 800, color: dot }}>.</span><span style={{ fontWeight: 400 }}>ARTS</span></div>;
+// Logo horizontal en negativo (las piezas OG son siempre oscuras). `size` es la unidad x: la altura es 2x.
+export function Wordmark({ size = 44, style }) {
+  const height = size * 2;
+  return <img src={brandUri("logo-horizontal-negativo.png")} width={Math.round((height * HORIZONTAL.w) / HORIZONTAL.h)} height={height} style={style} alt=""/>;
 }
 
 const FONT_SOURCES = [
